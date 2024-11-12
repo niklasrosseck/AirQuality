@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">Dashboard</div>
+      <h3 class="sidebar-header">Data</h3>
+      <nav>
+        <ul>
+          <li><a href="#">Temperature</a></li>
+          <li><a href="#">Humidity</a></li>
+          <li><a href="#">PM2.5</a></li>
+          <li><a href="#">PM10</a></li>
+          <li><a href="#">NOx</a></li>
+          <li><a href="#">NH3</a></li>
+          <li><a href="#">CO2</a></li>
+          <li><a href="#">SO2</a></li>
+          <li><a href="#">VOC</a></li>
+        </ul>
+      </nav>
+      <h3 class="sidebar-header">About</h3>
+      <nav>
+        <ul>
+          <li><a href="#">Placeholder</a></li>
+        </ul>
+      </nav>
+      <footer>
+        <a href="#">Settings</a>
+        <a href="#">Logout</a>
+      </footer>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+      <header class="header">
+        <h1>Welcome</h1>
+        <p>Here’s an overview of the air quality today</p>
+      </header>
+
+      <section class="metrics">
+        <div class="metric-card">
+          <h3>Today's Temperature</h3>
+          <p class="value">32°C</p>
+          <p class="change positive">+2%</p>
+        </div>
+        <div class="metric-card">
+          <h3>Today's Humidity</h3>
+          <p class="value">80%</p>
+          <p class="change negative">-14%</p>
+        </div>
+        <div class="metric-card">
+          <h3>Today's CO2</h3>
+          <p class="value">14ppm</p>
+          <p class="change positive">+36%</p>
+        </div>
+        <button class="add-button">+</button>
+      </section>
+
+      <section class="charts">
+        <div class="chart-card">
+          <h3>Temperature</h3>
+          <!-- Insert temperature chart here (use JS library like Chart.js for functionality) -->
+          <canvas id="temperatureChart"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>Humidity</h3>
+          <!-- Insert humidity chart here (use JS library like Chart.js for functionality) -->
+          <canvas id="humidityChart"></canvas>
+        </div>
+      </section>
+
+      <section class="extra-widgets">
+        <div class="trend-widget">
+          <h3>Trend Widget</h3>
+          <!-- Example mini chart or trend data -->
+          <p>Trend data goes here</p>
+        </div>
+        <div class="map-widget">
+          <h3>Map Overview</h3>
+          <!-- Insert a small map preview or image -->
+          <p><a href="#">View Full Map</a></p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
