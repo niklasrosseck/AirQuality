@@ -1,65 +1,23 @@
-// JavaScript to initialize the Temperature Chart
-const ctxTemp = document.getElementById("temperatureChart").getContext("2d");
-new Chart(ctxTemp, {
-  type: "line",
-  data: {
-    labels: [
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-    datasets: [
-      {
-        label: "Temperature",
-        data: [25, 26, 27, 28, 29, 30, 28, 27, 29, 30, 31],
-        borderColor: "#007bff",
-        fill: false,
-      },
-    ],
-  },
-  options: {
-    responsive: true,
-  },
-});
-
-// JavaScript to initialize the Humidity Chart
-const ctxHum = document.getElementById("humidityChart").getContext("2d");
-new Chart(ctxHum, {
-  type: "line",
-  data: {
-    labels: [
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-    datasets: [
-      {
-        label: "Humidity",
-        data: [60, 62, 63, 64, 65, 66, 64, 63, 65, 66, 67],
-        borderColor: "#17a2b8",
-        fill: false,
-      },
-    ],
-  },
-  options: {
-    responsive: true,
-  },
-});
-
 // Trying out the API
+function fetchWeatherData(city) {
+  const apiKey = "e2a14997ca28418cb8c105717241311";
+  const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=yes`;
+
+  $.ajax({
+    url: url,
+    method: "GET",
+    success: function (response) {
+      // Extracting the data needed from the json
+      const temperature = response.current.temp_c;
+      const humidity = response.current.humidity;
+      $("#temp-value").text(`${temperature}°C`);
+      $("#humidity-value").text(`${humidity}%`);
+    },
+    error: function (error) {
+      console.error("Error fetching weather data:", error);
+    },
+  });
+}
+$(document).ready(function () {
+  fetchWeatherData("Berlin");
+});
