@@ -105,7 +105,7 @@
                 <div class="welcome-section">
                   <h1 class="welcome-title">Welcome</h1>
                   <p class="welcome-message">
-                    here's an overview of the air quality today
+                    here's an overview of the air quality in Busan today
                   </p>
                 </div>
                 <div class="stats-grid">
@@ -133,45 +133,25 @@
                   </article>
                   <article class="stat-card">
                     <div class="card-content">
-                      <h2 class="card-title">Today's CO2</h2>
+                      <h2 class="card-title">Today's PM2.5</h2>
                       <div class="card-bottom">
-                        <div class="stat-value">14ppm</div>
+                        <div id="pm2_5-value" class="stat-value">--</div>
                         <div class="stat-change increase">
                           <span>+ 36%</span>
-                          <img
-                            loading="lazy"
-                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/69edc05b2b9acccbd0fffa75478dd7d7338872beec03c7e02babae183b9d2556?placeholderIfAbsent=true&apiKey=8b9feb513bf2456e87a930fd74d8da08"
-                            class="change-icon"
-                            alt=""
-                          />
                         </div>
                       </div>
                     </div>
                   </article>
-                  <article class="stat-card">
-                    <div class="card-content">
-                      <div class="card-bottom"></div>
-                    </div>
-                    <img
-                      loading="lazy"
-                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/b3c565ae803e7be2eaddf7b171fc08407dbc4de40b86933600701d5ef2bf9d1f?placeholderIfAbsent=true&apiKey=8b9feb513bf2456e87a930fd74d8da08"
-                      alt="Air quality index chart"
-                      class="menu-icon"
-                    />
-                  </article>
                 </div>
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/2c192731cdba19a5afba4e4ead8cf05eb0a2dd5d98147681735b9870b187df4a?placeholderIfAbsent=true&apiKey=8b9feb513bf2456e87a930fd74d8da08"
-                  alt="Air quality trend chart"
-                  class="chart-container"
-                />
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/54b889e86160332dc0f563829a48742092b987ffe9215b0ff495dc3a01282e80?placeholderIfAbsent=true&apiKey=8b9feb513bf2456e87a930fd74d8da08"
-                  alt="Pollutant levels chart"
-                  class="chart-container-2"
-                />
+                <div>
+                  <canvas id="temp-history-chart"></canvas>
+                </div>
+                <div>
+                  <canvas id="humidity-history-chart"></canvas>
+                </div>
+                <div>
+                  <canvas id="pm2_5-history-chart"></canvas>
+                </div>
               </div>
             </section>
           </div>

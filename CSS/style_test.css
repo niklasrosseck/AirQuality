@@ -378,3 +378,18 @@
   white-space: nowrap;
   border: 0;
 }
+#temp-history-chart {
+  width: 50vw; /* 80% of the viewport width */
+  height: 20vh; /* 50% of the viewport height */
+  margin-top: 1rem;
+}
+#humidity-history-chart {
+  width: 50vw; /* 80% of the viewport width */
+  height: 20vh; /* 50% of the viewport height */
+  margin-top: 2rem;
+}
+#pm2_5-history-chart {
+  width: 50vw; /* 80% of the viewport width */
+  height: 20vh; /* 50% of the viewport height */
+  margin-top: 2rem;
+}
