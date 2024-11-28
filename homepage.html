@@ -3,91 +3,160 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Air Quality Dashboard</title>
+    <link rel="stylesheet" href="CSS/style_test.css" />
+    <!--Google Fonts and Icons-->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="JS/logic_test.js"></script>
   </head>
   <body>
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="logo">Dashboard</div>
-      <h3 class="sidebar-header">Data</h3>
-      <nav>
-        <ul>
-          <li><a href="#">Temperature</a></li>
-          <li><a href="#">Humidity</a></li>
-          <li><a href="#">PM2.5</a></li>
-          <li><a href="#">PM10</a></li>
-          <li><a href="#">NOx</a></li>
-          <li><a href="#">NH3</a></li>
-          <li><a href="#">CO2</a></li>
-          <li><a href="#">SO2</a></li>
-          <li><a href="#">VOC</a></li>
-        </ul>
-      </nav>
-      <h3 class="sidebar-header">About</h3>
-      <nav>
-        <ul>
-          <li><a href="#">Placeholder</a></li>
-        </ul>
-      </nav>
-      <footer>
-        <a href="#">Settings</a>
-        <a href="#">Logout</a>
-      </footer>
-    </aside>
-
-    <!-- Main Content -->
-    <main>
-      <header class="header">
-        <h1>Welcome</h1>
-        <p>Here’s an overview of the air quality today</p>
-      </header>
-
-      <section class="metrics">
-        <div class="metric-card">
-          <h3>Today's Temperature</h3>
-          <p class="value">32°C</p>
-          <p class="change positive">+2%</p>
+    <main class="dashboard">
+      <div class="main-content">
+        <div class="dashboard-content">
+          <div class="content-wrapper">
+            <aside class="sidebar">
+              <nav class="sidebar-content">
+                <div class="sidebar-menu">
+                  <div class="menu-item">
+                    <a href="#" class="menu-link">
+                      <!--Homepage Sidebar Icon and Link-->
+                      <!--Aria Label used for Screen readers-->
+                      <i class="material-icons" aria-label="Home">home</i>
+                      <span>Dashboard</span>
+                    </a>
+                  </div>
+                  <!--Temperature Sidebar Icon and Link-->
+                  <h2 class="menu-section">Data</h2>
+                  <a href="#" class="menu-link" id="temperature-icon">
+                    <i class="material-icons" aria-label="Temperature"
+                      >thermostat</i
+                    >
+                    <span>Temperature</span>
+                  </a>
+                  <!--Humidity Sidebar Icon and Link-->
+                  <a href="#" class="menu-link">
+                    <i class="material-icons" aria-label="Humidity"
+                      >water_drop</i
+                    >
+                    <span>Humidity</span>
+                  </a>
+                  <!--PM2.5 Sidebar Icon and Link-->
+                  <a href="#" class="menu-link">
+                    <i class="material-icons" aria-label="PM2.5">grain</i>
+                    <span>PM2.5</span>
+                  </a>
+                  <!--PM10 Sidebar Icon and Link-->
+                  <a href="#" class="menu-link">
+                    <i class="material-icons" aria-label="PM10">grain</i>
+                    <span>PM10</span>
+                  </a>
+                  <!--NOx Sidebar Icon and Link-->
+                  <a href="#" class="menu-link">
+                    <i class="material-icons" aria-label="NOx">cloud_queue</i>
+                    <span>NOx</span>
+                  </a>
+                  <!--NH3 Sidebar Icon and Link-->
+                  <a href="#" class="menu-link">
+                    <i class="material-icons" aria-label="NH3">science</i>
+                    <span>NH3</span>
+                  </a>
+                  <!--CO2 Sidebar Icon and Link-->
+                  <a href="#" class="menu-link">
+                    <i class="material-icons" aria-label="CO2">eco</i>
+                    <span>CO2</span>
+                  </a>
+                  <!--SO2 Sidebar Icon and Link-->
+                  <a href="#" class="menu-link">
+                    <i class="material-icons" aria-label="SO2">filter_drama</i>
+                    <span>SO2</span>
+                  </a>
+                  <!--VOC Sidebar Icon and Link-->
+                  <a href="#" class="menu-link">
+                    <i class="material-icons" aria-label="VOC">flare</i>
+                    <span>VOC</span>
+                  </a>
+                  <h2 class="menu-section">About</h2>
+                  <!--Contact Sidebar Icon and Link-->
+                  <a href="#" class="menu-link">
+                    <i class="material-icons" aria-label="Contact">contacts</i>
+                    <span>Contact</span>
+                  </a>
+                  <!--Settings Sidebar Icon and Link-->
+                  <a href="#" class="settings-link">
+                    <i class="material-icons" aria-label="Settings">settings</i>
+                    <span>Settings</span>
+                  </a>
+                </div>
+                <!--Logout Sidebar Icon and Link-->
+                <a href="#" class="logout-link">
+                  <i class="material-icons" aria-label="Logout">logout</i>
+                  <span>Logout</span>
+                </a>
+              </nav>
+            </aside>
+            <section class="main-section">
+              <div class="main-content-area">
+                <div class="welcome-section">
+                  <h1 class="welcome-title">Welcome</h1>
+                  <p class="welcome-message">
+                    here's an overview of the air quality in Busan today
+                  </p>
+                </div>
+                <div class="stats-grid">
+                  <article class="stat-card">
+                    <div class="card-content">
+                      <h2 class="card-title">Today's Temperature</h2>
+                      <div class="card-bottom">
+                        <div id="value-1" class="stat-value"></div>
+                        <div class="stat-change increase">
+                          <span>+2%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                  <article class="stat-card">
+                    <div class="card-content">
+                      <h2 class="card-title">Today's Humidity</h2>
+                      <div class="card-bottom">
+                        <div id="value-2" class="stat-value">--</div>
+                        <div class="stat-change decrease">
+                          <span>-14%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                  <article class="stat-card">
+                    <div class="card-content">
+                      <h2 class="card-title">Today's PM2.5</h2>
+                      <div class="card-bottom">
+                        <div id="value-3" class="stat-value">--</div>
+                        <div class="stat-change increase">
+                          <span>+ 36%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+                <div>
+                  <canvas id="temp-history-chart"></canvas>
+                </div>
+                <div>
+                  <canvas id="humidity-history-chart"></canvas>
+                </div>
+                <div>
+                  <canvas id="pm2_5-history-chart"></canvas>
+                </div>
+              </div>
+            </section>
+          </div>
         </div>
-        <div class="metric-card">
-          <h3>Today's Humidity</h3>
-          <p class="value">80%</p>
-          <p class="change negative">-14%</p>
-        </div>
-        <div class="metric-card">
-          <h3>Today's CO2</h3>
-          <p class="value">14ppm</p>
-          <p class="change positive">+36%</p>
-        </div>
-        <button class="add-button">+</button>
-      </section>
-
-      <section class="charts">
-        <div class="chart-card">
-          <h3>Temperature</h3>
-          <!-- Insert temperature chart here (use JS library like Chart.js for functionality) -->
-          <canvas id="temperatureChart"></canvas>
-        </div>
-        <div class="chart-card">
-          <h3>Humidity</h3>
-          <!-- Insert humidity chart here (use JS library like Chart.js for functionality) -->
-          <canvas id="humidityChart"></canvas>
-        </div>
-      </section>
-
-      <section class="extra-widgets">
-        <div class="trend-widget">
-          <h3>Trend Widget</h3>
-          <!-- Example mini chart or trend data -->
-          <p>Trend data goes here</p>
-        </div>
-        <div class="map-widget">
-          <h3>Map Overview</h3>
-          <!-- Insert a small map preview or image -->
-          <p><a href="#">View Full Map</a></p>
-        </div>
-      </section>
+      </div>
     </main>
   </body>
 </html>

@@ -16,3 +16,9 @@ Next step:
 - Test openweathermap api and write Javascript function to output the data
 - Write a function to display this data as a graph
 -
+
+Tested several options for displaying the data
+
+- Opening a new html page when clicking on a sidebar icon -> too slow and to many API calls
+- Updating the boxes and graphs dynamically when clicking on a sidebar icon -> works but needs caching to guarantee a smooth experience
+- Loading everything at the start and clicking on the sidebar icon just scrolls down to the specified section

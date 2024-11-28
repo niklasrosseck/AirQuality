@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 .dashboard {
   border-radius: 0;
   display: flex;
@@ -388,7 +392,35 @@
   height: 20vh; /* 50% of the viewport height */
   margin-top: 2rem;
 }
-#pm2_5-history-chart {
+#bar-temp-today-chart {
+  width: 50vw; /* 80% of the viewport width */
+  height: 20vh; /* 50% of the viewport height */
+  margin-top: 2rem;
+}
+
+#bar-temp-7days-chart {
+  width: 50vw; /* 80% of the viewport width */
+  height: 20vh; /* 50% of the viewport height */
+  margin-top: 2rem;
+}
+
+#hum-7days-chart {
+  width: 50vw; /* 80% of the viewport width */
+  height: 20vh; /* 50% of the viewport height */
+  margin-top: 2rem;
+}
+
+#hum-today-chart {
+  width: 50vw; /* 80% of the viewport width */
+  height: 20vh; /* 50% of the viewport height */
+  margin-top: 2rem;
+}
+#pm2_5-today-chart,
+#pm10-today-chart,
+#no2-today-chart,
+#nh3-today-chart,
+#co-today-chart,
+#so2-today-chart {
   width: 50vw; /* 80% of the viewport width */
   height: 20vh; /* 50% of the viewport height */
   margin-top: 2rem;

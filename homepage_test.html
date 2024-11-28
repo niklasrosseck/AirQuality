@@ -12,8 +12,11 @@
     />
     <!--Jquery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!--Chart JS-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="JS/logic.js"></script>
+    <!--Own Scripts-->
+    <script src="JS/chart.js"></script>
+    <script src="JS/logic_test.js"></script>
   </head>
   <body>
     <main class="dashboard">
@@ -33,7 +36,7 @@
                   </div>
                   <!--Temperature Sidebar Icon and Link-->
                   <h2 class="menu-section">Data</h2>
-                  <a href="temperature.html" class="menu-link">
+                  <a href="#" class="menu-link" id="temperature-icon">
                     <i class="material-icons" aria-label="Temperature"
                       >thermostat</i
                     >
@@ -56,20 +59,20 @@
                     <i class="material-icons" aria-label="PM10">grain</i>
                     <span>PM10</span>
                   </a>
-                  <!--NOx Sidebar Icon and Link-->
+                  <!--NO2 Sidebar Icon and Link-->
                   <a href="#" class="menu-link">
                     <i class="material-icons" aria-label="NOx">cloud_queue</i>
-                    <span>NOx</span>
+                    <span>NO2</span>
                   </a>
                   <!--NH3 Sidebar Icon and Link-->
                   <a href="#" class="menu-link">
                     <i class="material-icons" aria-label="NH3">science</i>
                     <span>NH3</span>
                   </a>
-                  <!--CO2 Sidebar Icon and Link-->
+                  <!--CO Sidebar Icon and Link-->
                   <a href="#" class="menu-link">
-                    <i class="material-icons" aria-label="CO2">eco</i>
-                    <span>CO2</span>
+                    <i class="material-icons" aria-label="CO">eco</i>
+                    <span>CO</span>
                   </a>
                   <!--SO2 Sidebar Icon and Link-->
                   <a href="#" class="menu-link">
@@ -105,52 +108,255 @@
                 <div class="welcome-section">
                   <h1 class="welcome-title">Welcome</h1>
                   <p class="welcome-message">
-                    here's an overview of the air quality in Busan today
+                    Here's an overview of the air quality in Busan today
                   </p>
                 </div>
+
+                <!-- Overview Section -->
                 <div class="stats-grid">
+                  <!-- Current Value for Temperature -->
                   <article class="stat-card">
                     <div class="card-content">
                       <h2 class="card-title">Today's Temperature</h2>
                       <div class="card-bottom">
-                        <div id="temp-value" class="stat-value"></div>
-                        <div class="stat-change increase">
-                          <span>+2%</span>
-                        </div>
+                        <div id="value-temp" class="stat-value">--</div>
                       </div>
                     </div>
                   </article>
+
+                  <!-- Current Value for for Humidity -->
                   <article class="stat-card">
                     <div class="card-content">
                       <h2 class="card-title">Today's Humidity</h2>
                       <div class="card-bottom">
-                        <div id="humidity-value" class="stat-value">--</div>
-                        <div class="stat-change decrease">
-                          <span>-14%</span>
-                        </div>
+                        <div id="value-humidity" class="stat-value">--</div>
                       </div>
                     </div>
                   </article>
+
+                  <!-- Current Value for for Humidity -->
                   <article class="stat-card">
                     <div class="card-content">
                       <h2 class="card-title">Today's PM2.5</h2>
                       <div class="card-bottom">
-                        <div id="pm2_5-value" class="stat-value">--</div>
-                        <div class="stat-change increase">
-                          <span>+ 36%</span>
-                        </div>
+                        <div id="value-pm2_5" class="stat-value">--</div>
                       </div>
                     </div>
                   </article>
                 </div>
-                <div>
-                  <canvas id="temp-history-chart"></canvas>
+
+                <!-- Details Section Temperature -->
+                <div class="details-grid">
+                  <h2>Temperature Details</h2>
+                  <div class="details-box">
+                    <div id="current-temp" class="stat-detail">Current: --</div>
+                    <div id="yesterday-temp" class="stat-detail">
+                      Yesterday: --
+                    </div>
+                    <div id="avg-7days-temp" class="stat-detail">
+                      7-day Avg: --
+                    </div>
+                  </div>
+                  <div>
+                    <canvas id="bar-temp-today-chart"></canvas>
+                  </div>
+                  <div>
+                    <canvas id="bar-temp-7days-chart"></canvas>
+                  </div>
                 </div>
-                <div>
-                  <canvas id="humidity-history-chart"></canvas>
+
+                <!-- Details Section Humidity -->
+                <div class="details-grid">
+                  <h2>Humidity Details</h2>
+                  <div class="details-box">
+                    <div id="current-hum" class="stat-detail">Current: --</div>
+                    <div id="yesterday-hum" class="stat-detail">
+                      Yesterday: --
+                    </div>
+                    <div id="avg-7days-hum" class="stat-detail">
+                      7-day Avg: --
+                    </div>
+                  </div>
+                  <div>
+                    <canvas id="hum-today-chart"></canvas>
+                  </div>
+                  <div>
+                    <canvas id="hum-7days-chart"></canvas>
+                  </div>
                 </div>
-                <div>
-                  <canvas id="pm2_5-history-chart"></canvas>
+
+                <!-- Details Section PM2.5 -->
+                <div class="details-grid">
+                  <h2>PM2.5 Details</h2>
+                  <div class="info-section">
+                    <h3>What is PM2.5?</h3>
+                    <p>
+                      PM2.5 refers to fine particulate matter with a diameter of
+                      2.5 micrometers or smaller. These tiny particles can
+                      penetrate deep into the lungs and even enter the
+                      bloodstream. Exposure to PM2.5 has been linked to various
+                      health issues, including respiratory and cardiovascular
+                      diseases, aggravated asthma, and decreased lung function.
+                    </p>
+                    <p>
+                      Vulnerable groups, such as children, the elderly, and
+                      individuals with pre-existing health conditions, are
+                      particularly at risk. It is important to monitor and
+                      minimize exposure to high levels of PM2.5 to protect
+                      overall health.
+                    </p>
+                  </div>
+                  <div class="details-box">
+                    <div id="current-pm2" class="stat-detail">Current: --</div>
+                    <div id="yesterday-pm2" class="stat-detail">
+                      Yesterday: --
+                    </div>
+                    <div id="avg-7days-pm2" class="stat-detail">
+                      7-day Avg: --
+                    </div>
+                    <div id="forecast-avg-pm2" class="stat-detail">
+                      7-day Avg: --
+                    </div>
+                  </div>
+                  <div>
+                    <canvas id="pm2_5-today-chart"></canvas>
+                  </div>
+                  <div>
+                    <canvas id="pm2_5-7days-chart"></canvas>
+                  </div>
+                </div>
+
+                <!-- Details Section PM10 -->
+                <div class="details-grid">
+                  <h2>PM10 Details</h2>
+                  <div class="details-box">
+                    <div id="current-pm10" class="stat-detail">Current: --</div>
+                    <div id="yesterday-pm10" class="stat-detail">
+                      Yesterday: --
+                    </div>
+                    <div id="avg-7days-pm10" class="stat-detail">
+                      7-day Avg: --
+                    </div>
+                    <div id="forecast-avg-pm10" class="stat-detail">
+                      7-day Avg: --
+                    </div>
+                  </div>
+                  <div>
+                    <canvas id="pm10-today-chart"></canvas>
+                  </div>
+                  <div>
+                    <canvas id="pm10-7days-chart"></canvas>
+                  </div>
+                </div>
+
+                <!-- Details Section No2 -->
+                <div class="details-grid">
+                  <h2>No2 Details</h2>
+                  <div class="details-box">
+                    <div id="current-no2" class="stat-detail">Current: --</div>
+                    <div id="yesterday-no2" class="stat-detail">
+                      Yesterday: --
+                    </div>
+                    <div id="avg-7days-no2" class="stat-detail">
+                      7-day Avg: --
+                    </div>
+                    <div id="forecast-avg-no2" class="stat-detail">
+                      Forecast Avg: --
+                    </div>
+                  </div>
+                  <div>
+                    <canvas id="no2-today-chart"></canvas>
+                  </div>
+                  <div>
+                    <canvas id="no2-7days-chart"></canvas>
+                  </div>
+                </div>
+
+                <!-- Details Section NH3 -->
+                <div class="details-grid">
+                  <h2>NH3 Details</h2>
+                  <div class="details-box">
+                    <div id="current-nh3" class="stat-detail">Current: --</div>
+                    <div id="yesterday-nh3" class="stat-detail">
+                      Yesterday: --
+                    </div>
+                    <div id="avg-7days-nh3" class="stat-detail">
+                      7-day Avg: --
+                    </div>
+                    <div id="forecast-avg-nh3" class="stat-detail">
+                      Forecast Avg: --
+                    </div>
+                  </div>
+                  <div>
+                    <canvas id="nh3-today-chart"></canvas>
+                  </div>
+                  <div>
+                    <canvas id="nh3-7days-chart"></canvas>
+                  </div>
+                </div>
+                <!-- Details Section CO -->
+                <div class="details-grid">
+                  <h2>CO Details</h2>
+                  <div class="details-box">
+                    <div id="current-co" class="stat-detail">Current: --</div>
+                    <div id="yesterday-co" class="stat-detail">
+                      Yesterday: --
+                    </div>
+                    <div id="avg-7days-co" class="stat-detail">
+                      7-day Avg: --
+                    </div>
+                    <div id="forecast-avg-co" class="stat-detail">
+                      Forecast Avg: --
+                    </div>
+                  </div>
+                  <div>
+                    <canvas id="co-today-chart"></canvas>
+                  </div>
+                  <div>
+                    <canvas id="co-7days-chart"></canvas>
+                  </div>
+                </div>
+                <!-- Details Section SO2 -->
+                <div class="details-grid">
+                  <h2>SO2 Details</h2>
+                  <div class="details-box">
+                    <div id="current-so2" class="stat-detail">Current: --</div>
+                    <div id="yesterday-so2" class="stat-detail">
+                      Yesterday: --
+                    </div>
+                    <div id="avg-7days-so2" class="stat-detail">
+                      7-day Avg: --
+                    </div>
+                    <div id="forecast-avg-so2" class="stat-detail">
+                      Forecast Avg: --
+                    </div>
+                  </div>
+                  <div>
+                    <canvas id="so2-today-chart"></canvas>
+                  </div>
+                  <div>
+                    <canvas id="so2-7days-chart"></canvas>
+                  </div>
+                </div>
+
+                <!-- Details Section VOC -->
+                <div class="details-grid">
+                  <h2>VOC Details</h2>
+                  <div class="details-box">
+                    <div id="current-voc" class="stat-detail">Current: --</div>
+                    <div id="yesterday-voc" class="stat-detail">
+                      Yesterday: --
+                    </div>
+                    <div id="avg-7days-voc" class="stat-detail">
+                      7-day Avg: --
+                    </div>
+                  </div>
+                  <div>
+                    <canvas id="voc-today-chart"></canvas>
+                  </div>
+                  <div>
+                    <canvas id="voc-7days-chart"></canvas>
+                  </div>
                 </div>
               </div>
             </section>
