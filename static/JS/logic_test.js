@@ -1,92 +1,7 @@
 // Functions for dashboard
-
-function fetchWeatherData() {
-  const apiKey = "e2a14997ca28418cb8c105717241311";
-  const latandlong = "35.166668,129.066666";
-  const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latandlong}&aqi=yes`;
-
-  $.ajax({
-    url: url,
-    method: "GET",
-    success: function (response) {
-      // Extracting the data needed from the json
-      const temperature = response.current.temp_c;
-      const humidity = response.current.humidity;
-      const pm2_5 = response.current.air_quality.pm2_5;
-      $("#value-1").text(`${temperature}°C`);
-      $("#value-2").text(`${humidity}%`);
-      $("#value-3").text(`${pm2_5} µg/m³`);
-    },
-    error: function (error) {
-      console.error("Error fetching weather data:", error);
-    },
-  });
-}
-
-// Data for graphs
-function fetchHistoricalWeatherData() {
-  const apiKey = "e2a14997ca28418cb8c105717241311";
-  const latandlong = "35.166668,129.066666";
-  const url = `https://api.weatherapi.com/v1/history.json?key=${apiKey}&q=${latandlong}&aqi=yes`;
-
-  // Today's date in YYYY-MM-DD format
-  const today = new Date().toISOString().split("T")[0];
-
-  $.ajax({
-    url: url,
-    method: "GET",
-    data: {
-      dt: today,
-    },
-    success: function (response) {
-      let dates = [];
-      let temps = [];
-      let humidities = [];
-      response.forecast.forecastday[0].hour.forEach((hour) => {
-        dates.push(hour.time);
-        temps.push(hour.temp_c);
-        humidities.push(hour.humidity);
-      });
-      const colors = temps.map((temp) => getColorForTemperature(temp));
-      renderChart("temp-history-chart", "bar", dates, temps, {
-        chartTitle: "Today's Temperature",
-        datasetLabel: "Temperature (°C)",
-        xAxisLabel: "Time of Day",
-        yAxisLabel: "Temperature (°C)",
-        backgroundColor: colors,
-        borderColor: "rgba(255, 99, 132, 1)",
-        displayLegend: true,
-      });
-
-      renderChart("humidity-history-chart", "line", dates, humidities, {
-        chartTitle: "Today's Humidity",
-        datasetLabel: "Humidity (°C)",
-        xAxisLabel: "Time of Day",
-        yAxisLabel: "Humidity (°C)",
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderColor: "rgba(255, 99, 132, 1)",
-        displayLegend: true,
-      });
-    },
-    error: function (error) {
-      console.error("Error fetching historical data", error);
-    },
-  });
-}
-
-// Function for getting dynamic colors
-function getColorForTemperature(temp) {
-  if (temp >= 30) {
-    return "rgba(255, 69, 0, 0.8)"; // Hot: Red-Orange
-  } else if (temp >= 20) {
-    return "rgba(255, 165, 0, 0.8)"; // Warm: Orange
-  } else if (temp >= 10) {
-    return "rgba(255, 215, 0, 0.8)"; // Mild: Yellow
-  } else if (temp >= 0) {
-    return "rgba(135, 206, 250, 0.8)"; // Cool: Light Blue
-  } else {
-    return "rgba(0, 191, 255, 0.8)"; // Cold: Blue
-  }
+function toggleSidebar() {
+  const sidebar = document.querySelector(".sidebar");
+  sidebar.style.display = sidebar.style.display === "none" ? "flex" : "none";
 }
 
 function fetchAndUpdateData() {
@@ -98,16 +13,14 @@ function fetchAndUpdateData() {
   $.ajax({
     url: `${baseUrl}/current.json`,
     method: "GET",
-    data: { key: apiKey, q: location, aqi: "yes" },
+    data: { key: apiKey, q: location },
     success: (response) => {
       const currentTemp = response.current.temp_c;
       const currentHumidity = response.current.humidity;
-      const currentPM2_5 = response.current.air_quality.pm2_5;
 
       // Update current values
       $("#value-temp").text(`${currentTemp}°C`);
       $("#value-humidity").text(`${currentHumidity}%`);
-      $("#value-pm2_5").text(`${currentPM2_5.toFixed(2)} µg/m³`);
 
       // Update the current details section
       $("#current-temp").text(`Current: ${currentTemp}°C`);
@@ -277,6 +190,14 @@ function fetchAirPollutionData() {
         response.list[0].components;
 
       // Update UI for current data
+      $("#value-pm2_5").text(`${pm2_5} µg/m³`);
+      $("#value-pm10").text(`${pm10} µg/m³`);
+      $("#value-co").text(`${co} ppm`);
+      $("#value-no2").text(`${no2} ppb`);
+      $("#value-o3").text(`${o3} µg/m³`);
+      $("#value-so2").text(`${so2} ppb`);
+      $("#value-nh3").text(`${nh3} ppm`);
+
       $("#current-pm2").text(`Current: ${pm2_5} µg/m³`);
       $("#current-pm10").text(`Current: ${pm10} µg/m³`);
       $("#current-co").text(`Current: ${co} ppm`);
@@ -357,6 +278,11 @@ function fetchAirPollutionData() {
         tomorrowData.length
       ).toFixed(2);
 
+      const avgO3 = (
+        tomorrowData.reduce((sum, item) => sum + item.components.o3, 0) /
+        tomorrowData.length
+      ).toFixed(2);
+
       // Update UI with tomorrows averages
       $("#forecast-avg-pm2").text(`Tomorrows Average PM2.5: ${avgPM2_5} µg/m³`);
       $("#forecast-avg-pm10").text(`Tomorrows Average PM10: ${avgPM10} µg/m³`);
@@ -364,6 +290,7 @@ function fetchAirPollutionData() {
       $("#forecast-avg-nh3").text(`Tomorrows Average NH3: ${avgNH3} ppb`);
       $("#forecast-avg-co").text(`Tomorrows Average CO: ${avgCO} ppm`);
       $("#forecast-avg-so2").text(`Tomorrows Average SO2: ${avgSO2} ppb`);
+      $("#forecast-avg-o3").text(`Tomorrows Average O3: ${avgO3} µg/m³`);
     },
     error: (err) =>
       console.error("Error fetching forecast pollution data", err),
@@ -422,6 +349,11 @@ function fetchAirPollutionData() {
           pollutionData.length
         ).toFixed(2);
 
+        const avgO3 = (
+          pollutionData.reduce((sum, item) => sum + item.components.o3, 0) /
+          pollutionData.length
+        ).toFixed(2);
+
         // Update UI for yesterday's data
         $("#yesterday-pm2").text(
           `Yesterday's Average PM2.5: ${avgPM2_5} µg/m³`
@@ -431,6 +363,7 @@ function fetchAirPollutionData() {
         $("#yesterday-nh3").text(`Yesterday's Average NH3: ${avgNH3} ppb`);
         $("#yesterday-co").text(`Yesterday's Average CO: ${avgCO} ppm`);
         $("#yesterday-so2").text(`Yesterday's Average SO2: ${avgSO2} ppb`);
+        $("#yesterday-o3").text(`Yesterday's Average O3: ${avgO3} µg/m³`);
       }
     },
     error: (err) =>
@@ -455,6 +388,7 @@ function fetchAirPollutionData() {
         nh3: item.components.nh3,
         co: item.components.co,
         so2: item.components.so2,
+        o3: item.components.o3,
       }));
 
       avg7DaysData = calculateAverages(response.list);
@@ -480,12 +414,15 @@ function fetchAirPollutionData() {
 
       const totalSO2 = historicalData.reduce((sum, data) => sum + data.so2, 0);
 
+      const totalO3 = historicalData.reduce((sum, data) => sum + data.o3, 0);
+
       const avgPm2_5 = (totalPm2_5 / historicalData.length).toFixed(2);
       const avgPm10 = (totalPm10 / historicalData.length).toFixed(2);
       const avgNO2 = (totalNO2 / historicalData.length).toFixed(2);
       const avgNH3 = (totalNH3 / historicalData.length).toFixed(2);
       const avgCO = (totalCO / historicalData.length).toFixed(2);
       const avgSO2 = (totalSO2 / historicalData.length).toFixed(2);
+      const avgO3 = (totalO3 / historicalData.length).toFixed(2);
 
       // Update UI with averages
       $("#avg-7days-pm2").text(`7-Day Avg PM2.5: ${avgPm2_5} µg/m³`);
@@ -494,6 +431,7 @@ function fetchAirPollutionData() {
       $("#avg-7days-nh3").text(`7-Day Avg NH3: ${avgNH3} ppb`);
       $("#avg-7days-co").text(`7-Day Avg CO: ${avgCO} ppm`);
       $("#avg-7days-so2").text(`7-Day Avg SO2: ${avgSO2} ppb`);
+      $("#avg-7days-o3").text(`7-Day Avg O3: ${avgO3} µg/m³`);
     },
     error: (err) =>
       console.error("Error fetching historical pollution data", err),
@@ -509,6 +447,7 @@ function extractHourlyData(hourlyList) {
     nh3: [],
     co: [],
     so2: [],
+    o3: [],
     labels: [],
   };
 
@@ -521,6 +460,7 @@ function extractHourlyData(hourlyList) {
     data.nh3.push(item.components.nh3);
     data.co.push(item.components.co);
     data.so2.push(item.components.so2);
+    data.o3.push(item.components.o3);
   });
 
   return data;
@@ -542,6 +482,7 @@ function calculateAverages(historicalList) {
         nh3: [],
         co: [],
         so2: [],
+        o3: [],
       };
     }
 
@@ -551,6 +492,7 @@ function calculateAverages(historicalList) {
     dailyData[dayKey].nh3.push(item.components.nh3);
     dailyData[dayKey].co.push(item.components.co);
     dailyData[dayKey].so2.push(item.components.so2);
+    dailyData[dayKey].o3.push(item.components.o3);
   });
 
   const dailyAverages = {
@@ -561,6 +503,7 @@ function calculateAverages(historicalList) {
     nh3: [],
     co: [],
     so2: [],
+    o3: [],
   };
 
   Object.keys(dailyData).forEach((dayKey) => {
@@ -607,6 +550,13 @@ function calculateAverages(historicalList) {
         dailyData[dayKey].so2.length
       ).toFixed(2)
     );
+
+    dailyAverages.o3.push(
+      (
+        dailyData[dayKey].o3.reduce((sum, val) => sum + val, 0) /
+        dailyData[dayKey].o3.length
+      ).toFixed(2)
+    );
   });
 
   return dailyAverages;
@@ -620,6 +570,7 @@ function createAirPollutionChartsHourly(hourlyData) {
     { key: "nh3", name: "NH₃", unit: "ppb" },
     { key: "co", name: "CO", unit: "ppm" },
     { key: "so2", name: "SO₂", unit: "ppb" },
+    { key: "o3", name: "O3", unit: "μg/m³" },
   ];
 
   components.forEach(({ key, name, unit }) => {
@@ -677,6 +628,12 @@ function createAirPollutionCharts7days(avg7DaysData) {
       name: "SO₂",
       unit: "ppb",
       thresholds: [20, 80, 250, 350],
+    },
+    {
+      key: "o3",
+      name: "O3",
+      unit: "μg/m³",
+      thresholds: [60, 100, 140, 180],
     },
   ];
 

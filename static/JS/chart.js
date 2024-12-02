@@ -52,3 +52,18 @@ function renderChart(canvasId, chartType, labels, data, options = {}) {
     },
   });
 }
+
+// Functions for coloring the charts
+function getColorForTemperature(temp) {
+  if (temp >= 30) {
+    return "rgba(255, 69, 0, 0.8)"; // Hot: Red-Orange
+  } else if (temp >= 20) {
+    return "rgba(255, 165, 0, 0.8)"; // Warm: Orange
+  } else if (temp >= 10) {
+    return "rgba(255, 215, 0, 0.8)"; // Mild: Yellow
+  } else if (temp >= 0) {
+    return "rgba(135, 206, 250, 0.8)"; // Cool: Light Blue
+  } else {
+    return "rgba(0, 191, 255, 0.8)"; // Cold: Blue
+  }
+}
