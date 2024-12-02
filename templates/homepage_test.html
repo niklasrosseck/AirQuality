@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Air Quality Dashboard</title>
-    <link rel="stylesheet" href="CSS/style_test.css" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='CSS/style.css') }}"
+    />
     <!--Google Fonts and Icons-->
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -15,14 +18,15 @@
     <!--Chart JS-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!--Own Scripts-->
-    <script src="JS/chart.js"></script>
-    <script src="JS/logic_test.js"></script>
+    <script src="{{ url_for('static', filename='JS/chart.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/weather.js') }}"></script>
   </head>
   <body>
     <main class="dashboard">
       <div class="main-content">
         <div class="dashboard-content">
           <div class="content-wrapper">
+            <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
             <aside class="sidebar">
               <nav class="sidebar-content">
                 <div class="sidebar-menu">
@@ -79,10 +83,10 @@
                     <i class="material-icons" aria-label="SO2">filter_drama</i>
                     <span>SO2</span>
                   </a>
-                  <!--VOC Sidebar Icon and Link-->
+                  <!--O3 Sidebar Icon and Link-->
                   <a href="#" class="menu-link">
-                    <i class="material-icons" aria-label="VOC">flare</i>
-                    <span>VOC</span>
+                    <i class="material-icons" aria-label="O3">flare</i>
+                    <span>O3</span>
                   </a>
                   <h2 class="menu-section">About</h2>
                   <!--Contact Sidebar Icon and Link-->
@@ -140,6 +144,66 @@
                       <h2 class="card-title">Today's PM2.5</h2>
                       <div class="card-bottom">
                         <div id="value-pm2_5" class="stat-value">--</div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <!-- Current Value for PM10 -->
+                  <article class="stat-card">
+                    <div class="card-content">
+                      <h2 class="card-title">Today's PM10</h2>
+                      <div class="card-bottom">
+                        <div id="value-pm10" class="stat-value">--</div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <!-- Current Value for N02 -->
+                  <article class="stat-card">
+                    <div class="card-content">
+                      <h2 class="card-title">Today's NO2</h2>
+                      <div class="card-bottom">
+                        <div id="value-no2" class="stat-value">--</div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <!-- Current Value for NH3 -->
+                  <article class="stat-card">
+                    <div class="card-content">
+                      <h2 class="card-title">Today's NH3</h2>
+                      <div class="card-bottom">
+                        <div id="value-nh3" class="stat-value">--</div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <!-- Current Value for CO -->
+                  <article class="stat-card">
+                    <div class="card-content">
+                      <h2 class="card-title">Today's CO</h2>
+                      <div class="card-bottom">
+                        <div id="value-co" class="stat-value">--</div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <!-- Current Value for SO2 -->
+                  <article class="stat-card">
+                    <div class="card-content">
+                      <h2 class="card-title">Today's SO2</h2>
+                      <div class="card-bottom">
+                        <div id="value-so2" class="stat-value">--</div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <!-- Current Value for O3 -->
+                  <article class="stat-card">
+                    <div class="card-content">
+                      <h2 class="card-title">Today's O3</h2>
+                      <div class="card-bottom">
+                        <div id="value-o3" class="stat-value">--</div>
                       </div>
                     </div>
                   </article>
@@ -339,23 +403,23 @@
                   </div>
                 </div>
 
-                <!-- Details Section VOC -->
+                <!-- Details Section O3 -->
                 <div class="details-grid">
-                  <h2>VOC Details</h2>
+                  <h2>O3 Details</h2>
                   <div class="details-box">
-                    <div id="current-voc" class="stat-detail">Current: --</div>
-                    <div id="yesterday-voc" class="stat-detail">
+                    <div id="current-o3" class="stat-detail">Current: --</div>
+                    <div id="yesterday-o3" class="stat-detail">
                       Yesterday: --
                     </div>
-                    <div id="avg-7days-voc" class="stat-detail">
+                    <div id="avg-7days-o3" class="stat-detail">
                       7-day Avg: --
                     </div>
                   </div>
                   <div>
-                    <canvas id="voc-today-chart"></canvas>
+                    <canvas id="o3-today-chart"></canvas>
                   </div>
                   <div>
-                    <canvas id="voc-7days-chart"></canvas>
+                    <canvas id="o3-7days-chart"></canvas>
                   </div>
                 </div>
               </div>
