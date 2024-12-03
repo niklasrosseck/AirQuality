@@ -26,8 +26,8 @@ html {
 }
 
 .dashboard-content {
+  display: flex;
   z-index: 10;
-  margin-left: 24px;
   width: 100%;
   max-width: 1510px;
 }
@@ -41,6 +41,7 @@ html {
   flex-direction: column;
   line-height: normal;
   width: 19%;
+  max-width: 200px;
   margin-left: 0;
 }
 .sidebar-content {
@@ -134,6 +135,46 @@ html {
     cursor: pointer;
     z-index: 1000;
   }
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for small screens */
+    gap: 15px;
+  }
+
+  .donut-grid {
+    grid-column: span 2; /* Makes the donut chart span both columns */
+    margin-top: 20px;
+  }
+
+  .donut-title {
+    font-size: 18px; /* Smaller font size for mobile */
+    margin-bottom: 10px;
+  }
+  .content-grid {
+    grid-template-columns: 2fr;
+  }
+
+  .chart-container {
+    height: 300px;
+  }
+  .stat-value {
+    font-size: 18px;
+    white-space: normal;
+  }
+  .details-grid {
+    padding: 15px;
+  }
+
+  .info-section {
+    padding: 15px;
+  }
+
+  .stat-detail {
+    font-size: 0.9rem;
+  }
+
+  canvas {
+    height: 200px;
+  }
 }
 
 @media (min-width: 991px) {
@@ -172,11 +213,6 @@ html {
   flex-basis: auto;
   flex-grow: 1;
 }
-.container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-}
 
 /* Container for the Grid Layout */
 .container {
@@ -186,25 +222,19 @@ html {
   width: 100%;
 }
 
-/* Adaptive Content Grid */
 .content-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr; /* Two columns: Stats on left, chart on right */
+  grid-template-columns: 3fr 1fr;
   gap: 20px;
   align-items: start;
 }
 
-/* Stats Grid with Responsive Columns */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(250px, 1fr)
-  ); /* Adaptive layout */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
 }
 
-/* Stat Card Styling */
 .stat-card {
   background-color: #fff;
   border-radius: 8px;
@@ -230,33 +260,44 @@ html {
   color: #007bff;
 }
 
-/* Details Grid for Donut Chart */
 .donut-grid {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 10px;
 }
 
 .donut-title {
   text-align: center;
   font-size: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: #333;
 }
 
-/* Chart Container */
 .chart-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 400px;
 }
 
 /* Responsive Styling */
 @media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for small screens */
+    gap: 15px;
+  }
+
+  .donut-grid {
+    grid-column: span 2; /* Makes the donut chart span both columns */
+    margin-top: 20px;
+  }
+
+  .donut-title {
+    font-size: 18px; /* Smaller font size for mobile */
+    margin-bottom: 10px;
+  }
   .content-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 2fr;
   }
 
   .chart-container {
@@ -300,11 +341,14 @@ html {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
   display: flex;
+  padding: 20px;
   flex-direction: column;
   align-items: flex-start;
   gap: 20px;
+  width: 100%;
+  margin-top: 20px;
+  box-sizing: border-box;
 }
 
 /* Section Header */
@@ -312,13 +356,13 @@ html {
   font-size: 1.5rem;
   color: #333;
   margin-bottom: 10px;
+  text-align: center;
 }
 
 /* Info Section (Description of PM2.5) */
 .info-section {
   background-color: #f9f9f9;
   border-radius: 8px;
-  padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 100%;
 }
@@ -326,12 +370,16 @@ html {
 .info-section h3 {
   font-size: 1.25rem;
   margin-bottom: 10px;
+  text-align: center;
+  padding: 10px;
 }
 
 .info-section p {
   font-size: 1rem;
   line-height: 1.5;
   color: #666;
+  text-align: flex;
+  padding-inline: 20px;
 }
 
 /* Details Box (Stat Details) */
