@@ -38,7 +38,20 @@ function renderHourlyData() {
 // Fetch and render the 7-day average data using renderChart
 function renderSevenDayData() {
   $.get("/seven_day_data", function (data) {
-    // Render 7-day average temperature chart
+    $("#yesterday-temp").text("Yesterday:" + data.temps[5] + "°C");
+    $("#yesterday-hum").text("Yesterday:" + data.humidity[5] + "%");
+
+    const avg7DaysTemp = (
+      data.temps.reduce((a, b) => a + b, 0) / data.temps.length
+    ).toFixed(2);
+
+    const avg7DaysHum = (
+      data.humidity.reduce((a, b) => a + b, 0) / data.humidity.length
+    ).toFixed(2);
+
+    $("#avg-7days-temp").text(`7-day Avg: ${avg7DaysTemp}°C`);
+    $("#avg-7days-hum").text(`7-day Avg: ${avg7DaysHum}%`);
+
     renderChart("bar-temp-7days-chart", "bar", data.dates, data.temps, {
       chartTitle: "7-Day Average Temperature (°C)",
       datasetLabel: "Average Temperature (°C)",
@@ -49,7 +62,6 @@ function renderSevenDayData() {
       displayLegend: true,
     });
 
-    // Render 7-day average humidity chart
     renderChart("hum-7days-chart", "line", data.dates, data.humidity, {
       chartTitle: "7-Day Average Humidity (%)",
       datasetLabel: "Average Humidity (%)",
@@ -62,12 +74,10 @@ function renderSevenDayData() {
   });
 }
 
-// Call functions on page load
 $(document).ready(function () {
   updateWeather();
   renderHourlyData();
   renderSevenDayData();
 });
 
-// Update the weather every 10 seconds (for testing purposes)
-setInterval(updateWeather, 10000); // Update every 10 seconds (for testing purposes)
+//setInterval(updateWeather, 100000);
