@@ -11,10 +11,14 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       const width = container.clientWidth;
-      const height = container.clientHeight;
+      const height = (width / 16) * 9;
 
       canvas.width = width;
       canvas.height = height;
+
+      if (canvas.chart) {
+        canvas.chart.resize();
+      }
     });
   }
 

@@ -1,48 +1,69 @@
+* {
+  box-sizing: border-box;
+}
+
 html {
   scroll-behavior: smooth;
+  overflow-y: scroll; /* Allow smooth scrolling */
+}
+
+body {
+  overflow: visible; /* Allow body to scroll */
 }
 
 .dashboard {
-  border-radius: 0;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh; /* Ensures the dashboard takes up the full viewport height */
 }
+
 .main-content {
   background: #fafafb;
   display: flex;
   width: 100%;
-  padding-bottom: 43px;
   flex-direction: column;
-}
-.header {
-  background: #fff;
-  box-shadow: 0 1px 0 0 rgba(18, 32, 59, 0.09);
-  display: flex;
-  width: 100%;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 11px 73px;
+  flex: 1;
 }
 
 .dashboard-content {
+  display: flex;
   z-index: 10;
-  margin-left: 24px;
   width: 100%;
   max-width: 1510px;
+  flex: 1;
 }
 
 .content-wrapper {
-  gap: 20px;
   display: flex;
+  flex: 1;
+  overflow: visible; /* Allow sidebar to behave correctly */
 }
+
 .sidebar {
   display: flex;
   flex-direction: column;
   line-height: normal;
   width: 19%;
-  margin-left: 0;
+  max-width: 200px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background-color: #fafafa;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 20px 10px;
 }
+
+.main-section {
+  display: flex;
+  flex-direction: column;
+  width: 81%;
+  margin-left: 19%;
+  flex: 1;
+  padding: 20px;
+}
+
 .sidebar-content {
   display: flex;
   width: 100%;
@@ -50,7 +71,9 @@ html {
   color: #3f3f46;
   white-space: nowrap;
   font: 13px/2 Plus Jakarta Sans, sans-serif;
+  height: 100%;
 }
+
 .sidebar-menu {
   background: #fafafa;
   display: flex;
@@ -58,8 +81,10 @@ html {
   flex-direction: column;
   align-items: start;
   font-weight: 500;
-  padding: 107px 56px 0 15px;
+  padding: 10px 40px 0 15px;
+  flex-grow: 1;
 }
+
 .menu-item {
   display: flex;
   gap: 13px;
@@ -79,79 +104,157 @@ html {
   line-height: 2;
   letter-spacing: 1px;
   text-transform: uppercase;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 .menu-link {
   display: flex;
-  margin-top: 32px;
+  margin-top: 10px;
   gap: 13px;
   text-decoration: none;
 }
-.settings-link {
+.menu-link.active {
+  background-color: #f1f1f1;
+  border-left: 4px solid #007bff;
+  color: #007bff;
+}
+.settings-link,
+.logout-link {
   z-index: 10;
   display: flex;
-  margin-top: 297px;
-  gap: 13px;
+  gap: 10px;
   font-weight: 400;
   text-decoration: none;
-}
-.logout-link {
+  margin-top: auto;
   align-self: start;
-  display: flex;
-  gap: 13px;
-  font-weight: 400;
   margin: 21px 0 0 16px;
-  text-decoration: none;
 }
-/* For small screens (less than 991px) */
 @media (max-width: 991px) {
-  /* Hide the sidebar on small screens */
-  .sidebar {
-    display: none; /* Hide the sidebar */
-    transition: all 0.3s ease-in-out;
+  @media (max-width: 991px) {
+    /* Hide the sidebar initially */
+    .sidebar {
+      display: none; /* Hide the sidebar by default */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 80%; /* Sidebar width on small screens */
+      height: 100vh;
+      background-color: #fafafa;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      transition: transform 0.3s ease; /* Smooth transition */
+      transform: translateX(-100%); /* Sidebar offscreen initially */
+    }
+
+    /* Show the sidebar when toggled */
+    .sidebar.active {
+      transform: translateX(0); /* Move sidebar into view */
+    }
+
+    /* Main section adjusts when sidebar is visible */
+    .main-section {
+      width: 100%;
+      transition: margin-left 0.3s ease; /* Smooth transition */
+    }
+
+    .main-section.sidebar-active {
+      margin-left: 80%; /* Shift the main content to the right when sidebar is open */
+    }
+
+    /* Sidebar toggle button */
+    .sidebar-toggle {
+      display: block;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 1001; /* Ensure it's above the sidebar */
+    }
+
+    /* Make sure the sidebar items are visible and properly aligned */
+    .sidebar-menu {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      font-weight: 500;
+      margin-top: 20px; /* Optional: space between items */
+      gap: 15px; /* Gap between menu items */
+      width: 100%; /* Make sure the menu stretches fully */
+    }
+
+    .sidebar-content {
+      display: flex;
+      flex-direction: column;
+      color: #3f3f46;
+      white-space: nowrap;
+      font: 13px/2 Plus Jakarta Sans, sans-serif;
+      overflow: hidden; /* Prevent overflow */
+    }
+
+    /* Style the individual menu items */
+    .menu-item {
+      width: 100%; /* Make sure each menu item takes full width */
+    }
+
+    /* Ensure sidebar menu items take the full height when the sidebar is open */
+    .sidebar.active .sidebar-menu {
+      display: flex; /* Ensure it's not collapsed */
+    }
   }
 
-  .sidebar:hover {
-    display: flex;
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for small screens */
+    gap: 15px;
   }
 
-  /* Adjust main content to take full width */
-  .main-section {
-    width: 100%; /* Make the main content full width */
-  }
-
-  /* Optionally, add space between the content sections */
-  .main-content-area {
+  .donut-grid {
+    grid-column: span 2; /* Makes the donut chart span both columns */
     margin-top: 20px;
   }
 
-  /* Optionally, add a button or icon to show the sidebar again */
-  .sidebar-toggle {
-    display: block;
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    z-index: 1000;
+  .donut-title {
+    font-size: 18px; /* Smaller font size for mobile */
+    margin-bottom: 10px;
+  }
+  .content-grid {
+    grid-template-columns: 2fr;
+  }
+
+  .chart-container {
+    height: 300px;
+  }
+
+  .stat-value {
+    font-size: 18px;
+    white-space: normal;
+  }
+
+  .details-grid {
+    padding: 15px;
+  }
+
+  .info-section {
+    padding: 15px;
+  }
+
+  .stat-detail {
+    font-size: 0.9rem;
   }
 }
 
 @media (min-width: 991px) {
   .sidebar-toggle {
-    display: none; /* Hide the toggle button on larger screens */
+    display: none;
+  }
+  .sidebar {
+    display: block; /* Hide the sidebar */
+    transition: all 0.3s ease-in-out;
   }
 }
 
-.main-section {
-  display: flex;
-  flex-direction: column;
-  line-height: normal;
-  width: 81%;
-  margin-left: 20px;
-}
 .main-content-area {
   display: flex;
   margin-top: 33px;
@@ -175,92 +278,114 @@ html {
   flex-basis: auto;
   flex-grow: 1;
 }
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 25px;
-  margin-top: 32px;
+
+/* Container for the Grid Layout */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   width: 100%;
 }
 
+.content-grid {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
 .stat-card {
-  border-radius: 10px;
-  border: 1px solid #e4e4e7;
   background-color: #fff;
-  display: flex;
-  flex-direction: column;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  justify-content: space-between;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: center;
+  transition: transform 0.2s ease;
+  transition: background-color 0.3s ease;
 }
 
-/* Add subtle hover effect */
 .stat-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
 }
 
-.card-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-}
-
-.card-title {
-  color: #71717a;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+.card-content h2 {
+  font-size: 18px;
+  color: #333;
   margin-bottom: 10px;
 }
 
-.card-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.card-bottom .stat-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
 }
 
-.stat-value {
-  font-size: 24px;
-  font-weight: 700;
-  color: #18181b;
-  white-space: nowrap;
+.donut-grid {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+.donut-title {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Responsive Styling */
 @media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for small screens */
+    gap: 15px;
+  }
+
+  .donut-grid {
+    grid-column: span 2; /* Makes the donut chart span both columns */
+    margin-top: 20px;
+  }
+
+  .donut-title {
+    font-size: 18px; /* Smaller font size for mobile */
+    margin-bottom: 10px;
+  }
+  .content-grid {
+    grid-template-columns: 2fr;
+  }
+
+  .chart-container {
+    height: 300px;
+  }
   .stat-value {
     font-size: 18px;
     white-space: normal;
   }
-}
+  .details-grid {
+    padding: 15px;
+  }
 
-.chart-container {
-  aspect-ratio: 2.43;
-  object-fit: contain;
-  object-position: center;
-  width: 797px;
-  border-radius: 0;
-  margin-top: 29px;
-  max-width: 100%;
-}
-.chart-container-2 {
-  aspect-ratio: 2.43;
-  object-fit: contain;
-  object-position: center;
-  width: 797px;
-  border-radius: 0;
-  margin-top: 46px;
-  max-width: 100%;
-}
-@media (max-width: 991px) {
-  .chart-container-2 {
-    margin-top: 40px;
+  .info-section {
+    padding: 15px;
+  }
+
+  .stat-detail {
+    font-size: 0.9rem;
   }
 }
+
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -272,46 +397,116 @@ html {
   white-space: nowrap;
   border: 0;
 }
-#temp-history-chart {
-  width: 50vw; /* 80% of the viewport width */
-  height: 20vh; /* 50% of the viewport height */
-  margin-top: 1rem;
-}
-#humidity-history-chart {
-  width: 50vw; /* 80% of the viewport width */
-  height: 20vh; /* 50% of the viewport height */
-  margin-top: 2rem;
-}
-#bar-temp-today-chart {
-  width: 50vw; /* 80% of the viewport width */
-  height: 20vh; /* 50% of the viewport height */
-  margin-top: 2rem;
+
+/* Details Grid Container */
+.details-grid {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
+  box-sizing: border-box;
 }
 
-#bar-temp-7days-chart {
-  width: 50vw; /* 80% of the viewport width */
-  height: 20vh; /* 50% of the viewport height */
-  margin-top: 2rem;
+/* Section Header */
+.details-grid h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
-#hum-7days-chart {
-  width: 50vw; /* 80% of the viewport width */
-  height: 20vh; /* 50% of the viewport height */
-  margin-top: 2rem;
+/* Info Section (Description of PM2.5) */
+.info-section {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
-#hum-today-chart {
-  width: 50vw; /* 80% of the viewport width */
-  height: 20vh; /* 50% of the viewport height */
-  margin-top: 2rem;
+.info-section h3 {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+  text-align: center;
+  padding: 10px;
 }
-#pm2_5-today-chart,
-#pm10-today-chart,
-#no2-today-chart,
-#nh3-today-chart,
-#co-today-chart,
-#so2-today-chart {
-  width: 50vw; /* 80% of the viewport width */
-  height: 20vh; /* 50% of the viewport height */
-  margin-top: 2rem;
+
+.info-section p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #666;
+  text-align: flex;
+  padding-inline: 20px;
+}
+
+/* Details Box (Stat Details) */
+.details-box {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.stat-detail {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 1rem;
+  color: #333;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Canvas Styling for Charts */
+canvas {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  width: 100% !important;
+  max-width: 100%;
+  height: 100% !important;
+  min-height: 200px;
+}
+
+.canvas-container {
+  width: 100%;
+  position: relative;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  flex-shrink: 0;
+}
+
+/* Footer Styling */
+.footer {
+  background-color: #f1f1f1;
+  text-align: center;
+  padding: 10px 0;
+  border-top: 1px solid #ccc;
+  flex-shrink: 0;
+  height: auto;
+  min-height: 100px;
+  position: relative;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-nav a {
+  color: #555;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.footer-nav a:hover {
+  text-decoration: underline;
 }

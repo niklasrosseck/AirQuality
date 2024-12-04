@@ -25,12 +25,11 @@ seven_day_data = {
     "humidity": []
 }
 
-def get_weather_data():
+def get_weather_data(latitude, longitude):
     try:
-        # Fetch current weather
         response = requests.get(f"{BASE_URL}/current.json", params={
             "key": API_KEY,
-            "q": LOCATION
+            "q": f"{latitude},{longitude}"
         })
         data = response.json()
         current_weather["temp_c"] = data["current"]["temp_c"]
@@ -41,11 +40,11 @@ def get_weather_data():
     except Exception as e:
         print(f"Error fetching weather data: {e}")
 
-def get_hourly_data():
+def get_hourly_data(latitude, longitude):
     try:
         hourly_response = requests.get(f"{BASE_URL}/history.json", params={
             "key": API_KEY,
-            "q": LOCATION,
+            "q": f"{latitude},{longitude}",
             "dt": time.strftime("%Y-%m-%d")
         })
         hourly_data_response = hourly_response.json()
@@ -58,11 +57,11 @@ def get_hourly_data():
     except Exception as e:
         print(f"Error fetching weather data: {e}")
 
-def get_seven_day_data():
+def get_seven_day_data(latitude, longitude):
     try:
         seven_day_response = requests.get(f"{BASE_URL}/history.json", params={
             "key": API_KEY,
-            "q": LOCATION,
+            "q": f"{latitude},{longitude}",
             "dt": (datetime.now() - timedelta(days=6)).strftime('%Y-%m-%d'), 
             "end_dt": datetime.now().strftime('%Y-%m-%d')                     
         })
@@ -80,14 +79,17 @@ def get_seven_day_data():
         print(f"Error fetching weather data: {e}")
 
 
-def update_weather_periodically():
+def update_weather_periodically(latitude, longitude):
     """Update the weather data every 10 minutes"""
     while True:
-        get_weather_data()
-        get_hourly_data()
-        get_seven_day_data()
+        get_weather_data(latitude, longitude)
+        get_hourly_data(latitude, longitude)
+        get_seven_day_data(latitude, longitude)
         time.sleep(600)
 
-weather_thread = threading.Thread(target=update_weather_periodically)
+latitude = 35.1796
+longitude = 129.0756
+
+weather_thread = threading.Thread(target=update_weather_periodically, args=(latitude, longitude))
 weather_thread.daemon = True
 weather_thread.start()
