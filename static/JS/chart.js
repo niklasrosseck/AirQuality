@@ -68,8 +68,14 @@ function getColorForTemperature(temp) {
   }
 }
 
+let currentChart = null;
+
 function createDonutChart(data) {
   const ctx = document.getElementById("pollutionDonutChart").getContext("2d");
+
+  if (currentChart && currentChart instanceof Chart) {
+    currentChart.destroy();
+  }
 
   const chartData = {
     labels: ["PM2.5", "PM10", "CO", "NO2", "O3", "SO2", "NH3"],
@@ -126,7 +132,7 @@ function createDonutChart(data) {
     },
   };
 
-  new Chart(ctx, {
+  currentChart = new Chart(ctx, {
     type: "doughnut",
     data: chartData,
     options: chartOptions,

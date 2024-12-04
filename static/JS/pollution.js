@@ -1,8 +1,8 @@
 $(document).ready(function () {
-  updatePollution();
-  updateTomorrowpollution();
-  updateYesterdaypollution();
-  update7daypollution();
+  updatePollution("35.166668", "129.066666");
+  updateTomorrowpollution("35.166668", "129.066666");
+  updateYesterdaypollution("35.166668", "129.066666");
+  update7daypollution("35.166668", "129.066666");
 });
 
 const pollutantIcons = ["😊", "😐", "😷", "🤒", "🆘"];
@@ -33,142 +33,154 @@ function getStatColorForValue(value, thresholds) {
   return stat_pollutantcolors[stat_pollutantcolors.length - 1];
 }
 
-function updatePollution() {
-  $.get("/pollution_data", function (data) {
-    const components = [
-      {
-        key: "pm2_5",
-        name: "PM2.5",
-        unit: "μg/m³",
-        thresholds: [10, 25, 50, 75],
-      },
-      {
-        key: "pm10",
-        name: "PM10",
-        unit: "μg/m³",
-        thresholds: [20, 50, 100, 200],
-      },
-      {
-        key: "no2",
-        name: "NO₂",
-        unit: "ppb",
-        thresholds: [40, 70, 150, 200],
-      },
-      {
-        key: "nh3",
-        name: "NH₃",
-        unit: "ppb",
-        thresholds: [100, 200, 400, 800],
-      },
-      {
-        key: "co",
-        name: "CO",
-        unit: "ppm",
-        thresholds: [4400, 9400, 12400, 15400],
-      },
-      {
-        key: "so2",
-        name: "SO₂",
-        unit: "ppb",
-        thresholds: [20, 80, 250, 350],
-      },
-      {
-        key: "o3",
-        name: "O3",
-        unit: "μg/m³",
-        thresholds: [60, 100, 140, 180],
-      },
-    ];
+function updatePollution(latitude, longitude) {
+  $.get(
+    `/pollution_data?latitude=${latitude}&longitude=${longitude}`,
+    function (data) {
+      const components = [
+        {
+          key: "pm2_5",
+          name: "PM2.5",
+          unit: "μg/m³",
+          thresholds: [10, 25, 50, 75],
+        },
+        {
+          key: "pm10",
+          name: "PM10",
+          unit: "μg/m³",
+          thresholds: [20, 50, 100, 200],
+        },
+        {
+          key: "no2",
+          name: "NO₂",
+          unit: "ppb",
+          thresholds: [40, 70, 150, 200],
+        },
+        {
+          key: "nh3",
+          name: "NH₃",
+          unit: "ppb",
+          thresholds: [100, 200, 400, 800],
+        },
+        {
+          key: "co",
+          name: "CO",
+          unit: "ppm",
+          thresholds: [4400, 9400, 12400, 15400],
+        },
+        {
+          key: "so2",
+          name: "SO₂",
+          unit: "ppb",
+          thresholds: [20, 80, 250, 350],
+        },
+        {
+          key: "o3",
+          name: "O3",
+          unit: "μg/m³",
+          thresholds: [60, 100, 140, 180],
+        },
+      ];
 
-    components.forEach((component) => {
-      const value = data[component.key];
-      const color = getStatColorForValue(value, component.thresholds);
-      const icon = getIconForValue(value, component.thresholds);
+      components.forEach((component) => {
+        const value = data[component.key];
+        const color = getStatColorForValue(value, component.thresholds);
+        const icon = getIconForValue(value, component.thresholds);
 
-      $(`#value-${component.key}`).text(`${value} ${component.unit}`);
+        $(`#value-${component.key}`).text(`${value} ${component.unit}`);
 
-      const statCard = $(`#value-${component.key}`).closest(".stat-card");
-      statCard.css("background-color", color);
-      statCard.find(".status-icon").text(icon);
-    });
+        const statCard = $(`#value-${component.key}`).closest(".stat-card");
+        statCard.css("background-color", color);
+        statCard.find(".status-icon").text(icon);
+      });
 
-    $("#current-pm2").text(`Current: ${data.pm2_5} µg/m³`);
-    $("#current-pm10").text(`Current: ${data.pm10} µg/m³`);
-    $("#current-co").text(`Current: ${data.co} ppm`);
-    $("#current-no2").text(`Current: ${data.no2} ppb`);
-    $("#current-o3").text(`Current: ${data.o3} µg/m³`);
-    $("#current-so2").text(`Current: ${data.so2} ppb`);
-    $("#current-nh3").text(`Current: ${data.nh3} ppm`);
+      $("#current-pm2").text(`Current: ${data.pm2_5} µg/m³`);
+      $("#current-pm10").text(`Current: ${data.pm10} µg/m³`);
+      $("#current-co").text(`Current: ${data.co} ppm`);
+      $("#current-no2").text(`Current: ${data.no2} ppb`);
+      $("#current-o3").text(`Current: ${data.o3} µg/m³`);
+      $("#current-so2").text(`Current: ${data.so2} ppb`);
+      $("#current-nh3").text(`Current: ${data.nh3} ppm`);
 
-    createDonutChart(data);
-  });
+      createDonutChart(data);
+    }
+  );
 }
 
-function updateYesterdaypollution() {
-  $.get("/historical_pollution", function (data) {
-    $("#yesterday-pm2").text(
-      `Yesterday's Average PM2.5: ${data.avg_pm2_5} µg/m³`
-    );
-    $("#yesterday-pm10").text(
-      `Yesterday's Average PM10: ${data.avg_pm10} µg/m³`
-    );
-    $("#yesterday-no2").text(`Yesterday's Average NO2: ${data.avg_no2} ppb`);
-    $("#yesterday-nh3").text(`Yesterday's Average NH3: ${data.avg_nh3} ppb`);
-    $("#yesterday-co").text(`Yesterday's Average CO: ${data.avg_co} ppm`);
-    $("#yesterday-so2").text(`Yesterday's Average SO2: ${data.avg_so2} ppb`);
-    $("#yesterday-o3").text(`Yesterday's Average O3: ${data.avg_o3} µg/m³`);
-  });
+function updateYesterdaypollution(latitude, longitude) {
+  $.get(
+    `/historical_pollution?latitude=${latitude}&longitude=${longitude}`,
+    function (data) {
+      $("#yesterday-pm2").text(
+        `Yesterday's Average PM2.5: ${data.avg_pm2_5} µg/m³`
+      );
+      $("#yesterday-pm10").text(
+        `Yesterday's Average PM10: ${data.avg_pm10} µg/m³`
+      );
+      $("#yesterday-no2").text(`Yesterday's Average NO2: ${data.avg_no2} ppb`);
+      $("#yesterday-nh3").text(`Yesterday's Average NH3: ${data.avg_nh3} ppb`);
+      $("#yesterday-co").text(`Yesterday's Average CO: ${data.avg_co} ppm`);
+      $("#yesterday-so2").text(`Yesterday's Average SO2: ${data.avg_so2} ppb`);
+      $("#yesterday-o3").text(`Yesterday's Average O3: ${data.avg_o3} µg/m³`);
+    }
+  );
 }
 
-function update7daypollution() {
-  $.get("/historical_7day_pollution", function (data) {
-    const { historical_data, avg_pollution } = data;
-    avg7DaysData = calculateAverages(historical_data);
-    createAirPollutionCharts7days(avg7DaysData);
-    $("#avg-7days-pm2").text(
-      `7-Day Avg PM2.5: ${avg_pollution.avg_pm2_5} µg/m³`
-    );
-    $("#avg-7days-pm10").text(
-      `7-Day Avg PM10: ${avg_pollution.avg_pm10} µg/m³`
-    );
-    $("#avg-7days-no2").text(`7-Day Avg NO2: ${avg_pollution.avg_no2} ppb`);
-    $("#avg-7days-nh3").text(`7-Day Avg NH3: ${avg_pollution.avg_nh3} ppb`);
-    $("#avg-7days-co").text(`7-Day Avg CO: ${avg_pollution.avg_co} ppm`);
-    $("#avg-7days-so2").text(`7-Day Avg SO2: ${avg_pollution.avg_so2} ppb`);
-    $("#avg-7days-o3").text(`7-Day Avg O3: ${avg_pollution.avg_o3} µg/m³`);
-  });
+function update7daypollution(latitude, longitude) {
+  $.get(
+    `/historical_7day_pollution?latitude=${latitude}&longitude=${longitude}`,
+    function (data) {
+      const { historical_data, avg_pollution } = data;
+      avg7DaysData = calculateAverages(historical_data);
+      createAirPollutionCharts7days(avg7DaysData);
+      $("#avg-7days-pm2").text(
+        `7-Day Avg PM2.5: ${avg_pollution.avg_pm2_5} µg/m³`
+      );
+      $("#avg-7days-pm10").text(
+        `7-Day Avg PM10: ${avg_pollution.avg_pm10} µg/m³`
+      );
+      $("#avg-7days-no2").text(`7-Day Avg NO2: ${avg_pollution.avg_no2} ppb`);
+      $("#avg-7days-nh3").text(`7-Day Avg NH3: ${avg_pollution.avg_nh3} ppb`);
+      $("#avg-7days-co").text(`7-Day Avg CO: ${avg_pollution.avg_co} ppm`);
+      $("#avg-7days-so2").text(`7-Day Avg SO2: ${avg_pollution.avg_so2} ppb`);
+      $("#avg-7days-o3").text(`7-Day Avg O3: ${avg_pollution.avg_o3} µg/m³`);
+    }
+  );
 }
 
-function updateTomorrowpollution() {
-  $.get("/forecast_pollution", function (data) {
-    const { hourly_data, avg_pollution } = data;
+function updateTomorrowpollution(latitude, longitude) {
+  $.get(
+    `/forecast_pollution?latitude=${latitude}&longitude=${longitude}`,
+    function (data) {
+      const { hourly_data, avg_pollution } = data;
 
-    $("#forecast-avg-pm2").text(
-      `Tomorrows Average PM2.5: ${avg_pollution.avg_pm2_5} µg/m³`
-    );
-    $("#forecast-avg-pm10").text(
-      `Tomorrows Average PM10: ${avg_pollution.avg_pm10} µg/m³`
-    );
-    $("#forecast-avg-no2").text(
-      `Tomorrows Average NO2: ${avg_pollution.avg_no2} ppb`
-    );
-    $("#forecast-avg-nh3").text(
-      `Tomorrows Average NH3: ${avg_pollution.avg_nh3} ppb`
-    );
-    $("#forecast-avg-co").text(
-      `Tomorrows Average CO: ${avg_pollution.avg_co} ppm`
-    );
-    $("#forecast-avg-so2").text(
-      `Tomorrows Average SO2: ${avg_pollution.avg_so2} ppb`
-    );
-    $("#forecast-avg-o3").text(
-      `Tomorrows Average O3: ${avg_pollution.avg_o3} µg/m³`
-    );
+      $("#forecast-avg-pm2").text(
+        `Tomorrows Average PM2.5: ${avg_pollution.avg_pm2_5} µg/m³`
+      );
+      $("#forecast-avg-pm10").text(
+        `Tomorrows Average PM10: ${avg_pollution.avg_pm10} µg/m³`
+      );
+      $("#forecast-avg-no2").text(
+        `Tomorrows Average NO2: ${avg_pollution.avg_no2} ppb`
+      );
+      $("#forecast-avg-nh3").text(
+        `Tomorrows Average NH3: ${avg_pollution.avg_nh3} ppb`
+      );
+      $("#forecast-avg-co").text(
+        `Tomorrows Average CO: ${avg_pollution.avg_co} ppm`
+      );
+      $("#forecast-avg-so2").text(
+        `Tomorrows Average SO2: ${avg_pollution.avg_so2} ppb`
+      );
+      $("#forecast-avg-o3").text(
+        `Tomorrows Average O3: ${avg_pollution.avg_o3} µg/m³`
+      );
 
-    const hourlyData = extractHourlyData(hourly_data);
+      const hourlyData = extractHourlyData(hourly_data);
 
-    createAirPollutionChartsHourly(hourlyData);
-  });
+      createAirPollutionChartsHourly(hourlyData);
+    }
+  );
 }
 
 function extractHourlyData(hourlyList) {
@@ -234,7 +246,7 @@ function calculateAverages(historicalList) {
   const dailyData = {};
 
   historicalList.forEach((item) => {
-    const timeString = item.time; // Expecting 'YYYY-MM-DD HH:MM:SS'
+    const timeString = item.time;
     const dayKey = timeString.split(" ")[0];
 
     if (!dailyData[dayKey]) {

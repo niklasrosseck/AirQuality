@@ -18,11 +18,11 @@ current_pollution = {
     "o3": 0
 }
 
-def get_pollution_data():
+def get_pollution_data(latitude, longitude):
     try:
         response = requests.get(BASE_URL, params={
-            "lat": LATITUDE,
-            "lon": LONGITUDE,
+            "lat": f"{latitude}",
+            "lon": f"{longitude}",
             "appid": API_KEY
         })
         response.raise_for_status()  # Raise exception for HTTP errors
@@ -44,11 +44,11 @@ def get_pollution_data():
         print(f"Error fetching pollution data: {e}")
 
 
-def get_forecast_pollution():
+def get_forecast_pollution(latitude, longitude):
     try:
         response = requests.get(f"{BASE_URL}/forecast", params={
-            "lat": LATITUDE,
-            "lon": LONGITUDE,
+            "lat": f"{latitude}",
+            "lon": f"{longitude}",
             "appid": API_KEY
         })
         response.raise_for_status()
@@ -95,15 +95,15 @@ def get_forecast_pollution():
         print(f"Error fetching forecast pollution data: {e}")
         return None, None
 
-def get_historical_pollution():
+def get_historical_pollution(latitude, longitude):
     try: 
         now = datetime.now()
         yesterday_start = int((now - timedelta(days=1)).replace(hour=0, minute=0, second=0).timestamp())
         yesterday_end = int((now - timedelta(days=1)).replace(hour=23, minute=59, second=59).timestamp())
 
         response = requests.get(f"{BASE_URL}/history", params={
-            "lat": LATITUDE,
-            "lon": LONGITUDE,
+            "lat": f"{latitude}",
+            "lon": f"{longitude}",
             "appid": API_KEY,
             "start": yesterday_start,
             "end": yesterday_end
@@ -132,14 +132,14 @@ def get_historical_pollution():
         print(f"Error fetching history pollution data: {e}")
         return None, None
     
-def get_7day_pollution():
+def get_7day_pollution(latitude, longitude):
     try:
         end = int(datetime.now().timestamp())
         start = end - 7 * 24 * 60 * 60 
 
         response = requests.get(f"{BASE_URL}/history", params={
-            "lat": LATITUDE,
-            "lon": LONGITUDE,
+            "lat": f"{latitude}",
+            "lon": f"{longitude}",
             "start": start,
             "end": end,
             "appid": API_KEY
@@ -182,14 +182,17 @@ def get_7day_pollution():
         print(f"Error fetching 7 day history pollution data: {e}")
         return None, None
 
-def update_pollution_periodically():
+def update_pollution_periodically(latitude, longitude):
     while True:
-        get_pollution_data()
-        get_forecast_pollution()
-        get_historical_pollution()
-        get_7day_pollution()
+        get_pollution_data(latitude, longitude)
+        get_forecast_pollution(latitude, longitude)
+        get_historical_pollution(latitude, longitude)
+        get_7day_pollution(latitude, longitude)
         time.sleep(600)  
 
-pollution_thread = threading.Thread(target=update_pollution_periodically)
+latitude = 35.1796
+longitude = 129.0756
+
+pollution_thread = threading.Thread(target=update_pollution_periodically, args=(latitude, longitude))
 pollution_thread.daemon = True 
 pollution_thread.start()

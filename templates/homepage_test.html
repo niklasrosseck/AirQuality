@@ -15,6 +15,9 @@
     />
     <!--Jquery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
     <!--Chart JS-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!--Own Scripts-->
@@ -22,7 +25,9 @@
     <script src="{{ url_for('static', filename='JS/weather.js') }}"></script>
     <script src="{{ url_for('static', filename='JS/pollution.js') }}"></script>
     <script src="{{ url_for('static', filename='JS/logic.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/sidebar.js') }}"></script>
     <script src="{{ url_for('static', filename='JS/resize.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/city.js') }}"></script>
   </head>
   <body>
     <main class="dashboard">
@@ -34,7 +39,7 @@
               <nav class="sidebar-content">
                 <div class="sidebar-menu">
                   <div class="menu-item">
-                    <a href="#" class="menu-link">
+                    <a href="#dashboard-section" class="menu-link">
                       <!--Homepage Sidebar Icon and Link-->
                       <!--Aria Label used for Screen readers-->
                       <i class="material-icons" aria-label="Home">home</i>
@@ -43,51 +48,51 @@
                   </div>
                   <!--Temperature Sidebar Icon and Link-->
                   <h2 class="menu-section">Data</h2>
-                  <a href="#" class="menu-link" id="temperature-icon">
+                  <a href="#temperature-section" class="menu-link" id="temperature-icon">
                     <i class="material-icons" aria-label="Temperature"
                       >thermostat</i
                     >
                     <span>Temperature</span>
                   </a>
                   <!--Humidity Sidebar Icon and Link-->
-                  <a href="#" class="menu-link">
+                  <a href="#humidity-section" class="menu-link">
                     <i class="material-icons" aria-label="Humidity"
                       >water_drop</i
                     >
                     <span>Humidity</span>
                   </a>
                   <!--PM2.5 Sidebar Icon and Link-->
-                  <a href="#" class="menu-link">
+                  <a href="#pm2_5-section" class="menu-link">
                     <i class="material-icons" aria-label="PM2.5">grain</i>
                     <span>PM2.5</span>
                   </a>
                   <!--PM10 Sidebar Icon and Link-->
-                  <a href="#" class="menu-link">
+                  <a href="#pm10-section" class="menu-link">
                     <i class="material-icons" aria-label="PM10">grain</i>
                     <span>PM10</span>
                   </a>
                   <!--NO2 Sidebar Icon and Link-->
-                  <a href="#" class="menu-link">
+                  <a href="#no2-section" class="menu-link">
                     <i class="material-icons" aria-label="NOx">cloud_queue</i>
                     <span>NO2</span>
                   </a>
                   <!--NH3 Sidebar Icon and Link-->
-                  <a href="#" class="menu-link">
+                  <a href="#nh3-section" class="menu-link">
                     <i class="material-icons" aria-label="NH3">science</i>
                     <span>NH3</span>
                   </a>
                   <!--CO Sidebar Icon and Link-->
-                  <a href="#" class="menu-link">
+                  <a href="#co-section" class="menu-link">
                     <i class="material-icons" aria-label="CO">eco</i>
                     <span>CO</span>
                   </a>
                   <!--SO2 Sidebar Icon and Link-->
-                  <a href="#" class="menu-link">
+                  <a href="#so2-section" class="menu-link">
                     <i class="material-icons" aria-label="SO2">filter_drama</i>
                     <span>SO2</span>
                   </a>
                   <!--O3 Sidebar Icon and Link-->
-                  <a href="#" class="menu-link">
+                  <a href="#o3-section" class="menu-link">
                     <i class="material-icons" aria-label="O3">flare</i>
                     <span>O3</span>
                   </a>
@@ -97,12 +102,12 @@
                     <i class="material-icons" aria-label="Contact">contacts</i>
                     <span>Contact</span>
                   </a>
-                  <!--Settings Sidebar Icon and Link-->
-                  <a href="#" class="settings-link">
-                    <i class="material-icons" aria-label="Settings">settings</i>
-                    <span>Settings</span>
-                  </a>
                 </div>
+                <!--Settings Sidebar Icon and Link-->
+                <a href="#" class="settings-link">
+                  <i class="material-icons" aria-label="Settings">settings</i>
+                  <span>Settings</span>
+                </a>
                 <!--Logout Sidebar Icon and Link-->
                 <a href="#" class="logout-link">
                   <i class="material-icons" aria-label="Logout">logout</i>
@@ -110,13 +115,17 @@
                 </a>
               </nav>
             </aside>
-            <section class="main-section">
+            <section class="main-section" id="dashboard-section">
               <div class="main-content-area">
                 <div class="welcome-section">
                   <h1 class="welcome-title">Welcome</h1>
                   <p class="welcome-message">
                     Here's an overview of the air quality in Busan today
                   </p>
+                  <div class="search-container">
+                    <input type="text" id="city-search" placeholder="Enter city name" />
+                    <button id="search-button">Search</button>
+                </div>
                 </div>
                 <div class="container">
                   <div class="content-grid">
@@ -229,6 +238,7 @@
                 </div>
 
                 <!-- Details Section Temperature -->
+                <section id="temperature-section">
                 <div class="details-grid">
                   <h2>Temperature Details</h2>
                   <div class="details-box">
@@ -247,8 +257,10 @@
                     </div>
                   </div>
                 </div>
+                </section>
 
                 <!-- Details Section Humidity -->
+                <section id="humidity-section">
                 <div class="details-grid">
                   <h2>Humidity Details</h2>
                   <div class="details-box">
@@ -267,8 +279,10 @@
                     </div>
                   </div>
                 </div>
+                </section>
 
                 <!-- Details Section PM2.5 -->
+                <section id="pm2_5-section">
                 <div class="details-grid">
                   <h2>PM2.5 Details</h2>
                   <div class="info-section">
@@ -308,8 +322,10 @@
                     </div>
                   </div>
                 </div>
+                </section>
 
                 <!-- Details Section PM10 -->
+                <section id="pm10-section">
                 <div class="details-grid">
                   <h2>PM10 Details</h2>
                   <div class="info-section">
@@ -352,8 +368,10 @@
                     </div>
                   </div>
                 </div>
+                </section>
 
                 <!-- Details Section No2 -->
+                <section id="no2-section">
                 <div class="details-grid">
                   <h2>No2 Details</h2>
                   <div class="info-section">
@@ -398,8 +416,10 @@
                     </div>
                   </div>
                 </div>
+                </section>
 
                 <!-- Details Section NH3 -->
+                <section id="nh3-section">
                 <div class="details-grid">
                   <h2>NH3 Details</h2>
                   <div class="info-section">
@@ -444,8 +464,10 @@
                     </div>
                   </div>
                 </div>
+                </section>
 
                 <!-- Details Section CO -->
+                <section id="co-section">
                 <div class="details-grid">
                   <h2>CO Details</h2>
                   <div class="info-section">
@@ -490,8 +512,10 @@
                     </div>
                   </div>
                 </div>
+                </section>
 
                 <!-- Details Section SO2 -->
+                <section id="so2-section">
                 <div class="details-grid">
                   <h2>SO2 Details</h2>
                   <div class="info-section">
@@ -536,8 +560,10 @@
                     </div>
                   </div>
                 </div>
+                </section>
 
                 <!-- Details Section O3 -->
+                <section id="o3-section">
                 <div class="details-grid">
                   <h2>O3 Details</h2>
                   <div class="info-section">
@@ -580,9 +606,21 @@
                 </div>
               </div>
             </section>
+            </section>
           </div>
         </div>
       </div>
     </main>
+    <footer class="footer">
+      <div class="footer-content">
+        <p>&copy; 2024 PNU University. All rights reserved.</p>
+        <nav class="footer-nav">
+          <a href="/privacy">Privacy Policy</a> |
+          <a href="/terms">Terms of Service</a> |
+          <a href="/contact">Contact</a> |
+          <a href="https://github.com/niklasrosseck/AirQuality">Github</a>
+        </nav>
+      </div>
+    </footer>
   </body>
 </html>
