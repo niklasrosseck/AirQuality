@@ -171,10 +171,6 @@ html {
   .stat-detail {
     font-size: 0.9rem;
   }
-
-  canvas {
-    height: 200px;
-  }
 }
 
 @media (min-width: 991px) {
@@ -242,6 +238,7 @@ html {
   padding: 20px;
   text-align: center;
   transition: transform 0.2s ease;
+  transition: background-color 0.3s ease;
 }
 
 .stat-card:hover {
@@ -317,10 +314,6 @@ html {
 
   .stat-detail {
     font-size: 0.9rem;
-  }
-
-  canvas {
-    height: 200px;
   }
 }
 
@@ -405,6 +398,12 @@ canvas {
   background-color: #f9f9f9;
   border-radius: 8px;
   width: 100% !important;
-  height: 250px;
   max-width: 100%;
+  height: 100% !important;
+}
+
+.canvas-container {
+  width: 100%;
+  position: relative;
+  height: auto;
 }

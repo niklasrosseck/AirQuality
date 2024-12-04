@@ -5,15 +5,92 @@ $(document).ready(function () {
   update7daypollution();
 });
 
+const pollutantIcons = ["😊", "😐", "😷", "🤒", "🆘"];
+
+function getIconForValue(value, thresholds) {
+  for (let i = 0; i < thresholds.length; i++) {
+    if (value <= thresholds[i]) {
+      return pollutantIcons[i];
+    }
+  }
+  return pollutantIcons[pollutantIcons.length - 1];
+}
+
+const stat_pollutantcolors = [
+  "rgba(46, 204, 113, 0.4)", // Good (Green)
+  "rgba(241, 196, 15, 0.4)", // Fair (Yellow)
+  "rgba(230, 126, 34, 0.4)", // Moderate (Orange)
+  "rgba(231, 76, 60, 0.4)", // Poor (Red)
+  "rgba(142, 68, 173, 0.4)", // Very Poor (Purple)
+];
+
+function getStatColorForValue(value, thresholds) {
+  for (let i = 0; i < thresholds.length; i++) {
+    if (value <= thresholds[i]) {
+      return stat_pollutantcolors[i];
+    }
+  }
+  return stat_pollutantcolors[stat_pollutantcolors.length - 1];
+}
+
 function updatePollution() {
   $.get("/pollution_data", function (data) {
-    $("#value-pm2_5").text(`${data.pm2_5} µg/m³`);
-    $("#value-pm10").text(`${data.pm10} µg/m³`);
-    $("#value-co").text(`${data.co} ppm`);
-    $("#value-no2").text(`${data.no2} ppb`);
-    $("#value-o3").text(`${data.o3} µg/m³`);
-    $("#value-so2").text(`${data.so2} ppb`);
-    $("#value-nh3").text(`${data.nh3} ppm`);
+    const components = [
+      {
+        key: "pm2_5",
+        name: "PM2.5",
+        unit: "μg/m³",
+        thresholds: [10, 25, 50, 75],
+      },
+      {
+        key: "pm10",
+        name: "PM10",
+        unit: "μg/m³",
+        thresholds: [20, 50, 100, 200],
+      },
+      {
+        key: "no2",
+        name: "NO₂",
+        unit: "ppb",
+        thresholds: [40, 70, 150, 200],
+      },
+      {
+        key: "nh3",
+        name: "NH₃",
+        unit: "ppb",
+        thresholds: [100, 200, 400, 800],
+      },
+      {
+        key: "co",
+        name: "CO",
+        unit: "ppm",
+        thresholds: [4400, 9400, 12400, 15400],
+      },
+      {
+        key: "so2",
+        name: "SO₂",
+        unit: "ppb",
+        thresholds: [20, 80, 250, 350],
+      },
+      {
+        key: "o3",
+        name: "O3",
+        unit: "μg/m³",
+        thresholds: [60, 100, 140, 180],
+      },
+    ];
+
+    components.forEach((component) => {
+      const value = data[component.key];
+      const color = getStatColorForValue(value, component.thresholds);
+      const icon = getIconForValue(value, component.thresholds);
+
+      $(`#value-${component.key}`).text(`${value} ${component.unit}`);
+
+      const statCard = $(`#value-${component.key}`).closest(".stat-card");
+      statCard.css("background-color", color);
+      statCard.find(".status-icon").text(icon);
+    });
 
     $("#current-pm2").text(`Current: ${data.pm2_5} µg/m³`);
     $("#current-pm10").text(`Current: ${data.pm10} µg/m³`);

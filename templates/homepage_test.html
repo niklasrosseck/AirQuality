@@ -22,6 +22,7 @@
     <script src="{{ url_for('static', filename='JS/weather.js') }}"></script>
     <script src="{{ url_for('static', filename='JS/pollution.js') }}"></script>
     <script src="{{ url_for('static', filename='JS/logic.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/resize.js') }}"></script>
   </head>
   <body>
     <main class="dashboard">
@@ -147,6 +148,7 @@
                           <h2 class="card-title">Today's PM2.5</h2>
                           <div class="card-bottom">
                             <div id="value-pm2_5" class="stat-value">--</div>
+                            <div class="status-icon" id="status-pm2_5">😊</div>
                           </div>
                         </div>
                       </article>
@@ -157,6 +159,7 @@
                           <h2 class="card-title">Today's PM10</h2>
                           <div class="card-bottom">
                             <div id="value-pm10" class="stat-value">--</div>
+                            <div class="status-icon" id="status-pm10">😊</div>
                           </div>
                         </div>
                       </article>
@@ -167,6 +170,7 @@
                           <h2 class="card-title">Today's NO2</h2>
                           <div class="card-bottom">
                             <div id="value-no2" class="stat-value">--</div>
+                            <div class="status-icon" id="status-no2">😊</div>
                           </div>
                         </div>
                       </article>
@@ -177,6 +181,7 @@
                           <h2 class="card-title">Today's NH3</h2>
                           <div class="card-bottom">
                             <div id="value-nh3" class="stat-value">--</div>
+                            <div class="status-icon" id="status-nh3">😊</div>
                           </div>
                         </div>
                       </article>
@@ -187,6 +192,7 @@
                           <h2 class="card-title">Today's CO</h2>
                           <div class="card-bottom">
                             <div id="value-co" class="stat-value">--</div>
+                            <div class="status-icon" id="status-co">😊</div>
                           </div>
                         </div>
                       </article>
@@ -197,6 +203,7 @@
                           <h2 class="card-title">Today's SO2</h2>
                           <div class="card-bottom">
                             <div id="value-so2" class="stat-value">--</div>
+                            <div class="status-icon" id="status-so2">😊</div>
                           </div>
                         </div>
                       </article>
@@ -207,6 +214,7 @@
                           <h2 class="card-title">Today's O3</h2>
                           <div class="card-bottom">
                             <div id="value-o3" class="stat-value">--</div>
+                            <div class="status-icon" id="status-o3">😊</div>
                           </div>
                         </div>
                       </article>
@@ -231,10 +239,10 @@
                     <div id="avg-7days-temp" class="stat-detail">
                       7-day Avg: --
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="bar-temp-today-chart"></canvas>
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="bar-temp-7days-chart"></canvas>
                     </div>
                   </div>
@@ -251,10 +259,10 @@
                     <div id="avg-7days-hum" class="stat-detail">
                       7-day Avg: --
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="hum-today-chart"></canvas>
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="hum-7days-chart"></canvas>
                     </div>
                   </div>
@@ -292,10 +300,10 @@
                     <div id="forecast-avg-pm2" class="stat-detail">
                       7-day Avg: --
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="pm2_5-tomorrow-chart"></canvas>
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="pm2_5-7days-chart"></canvas>
                     </div>
                   </div>
@@ -304,6 +312,27 @@
                 <!-- Details Section PM10 -->
                 <div class="details-grid">
                   <h2>PM10 Details</h2>
+                  <div class="info-section">
+                    <h3>What is PM10?</h3>
+                    <p>
+                      PM10 refers to particulate matter with a diameter of 10
+                      micrometers or smaller. These particles are larger than
+                      PM2.5 but can still be inhaled into the respiratory
+                      system.
+                    </p>
+                    <p>
+                      Exposure to PM10 can cause respiratory irritation,
+                      coughing, and exacerbation of pre-existing respiratory
+                      diseases such as asthma and bronchitis. Long-term exposure
+                      may also contribute to reduced lung function.
+                    </p>
+                    <p>
+                      Children, the elderly, and individuals with respiratory or
+                      cardiovascular conditions are particularly vulnerable.
+                      Monitoring PM10 levels is essential for maintaining good
+                      air quality and protecting public health.
+                    </p>
+                  </div>
                   <div class="details-box">
                     <div id="current-pm10" class="stat-detail">Current: --</div>
                     <div id="yesterday-pm10" class="stat-detail">
@@ -315,10 +344,10 @@
                     <div id="forecast-avg-pm10" class="stat-detail">
                       7-day Avg: --
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="pm10-tomorrow-chart"></canvas>
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="pm10-7days-chart"></canvas>
                     </div>
                   </div>
@@ -327,6 +356,29 @@
                 <!-- Details Section No2 -->
                 <div class="details-grid">
                   <h2>No2 Details</h2>
+                  <div class="info-section">
+                    <h3>What is NO₂?</h3>
+                    <p>
+                      Nitrogen dioxide (NO₂) is a harmful gas primarily produced
+                      by vehicle emissions, industrial processes, and combustion
+                      of fossil fuels. It is a significant air pollutant that
+                      contributes to the formation of smog and acid rain.
+                    </p>
+                    <p>
+                      Short-term exposure to NO₂ can irritate the respiratory
+                      system, causing coughing, wheezing, and shortness of
+                      breath. Long-term exposure increases the risk of
+                      developing respiratory infections and can aggravate asthma
+                      and chronic lung diseases.
+                    </p>
+                    <p>
+                      Vulnerable populations, such as children, the elderly, and
+                      individuals with respiratory diseases, are particularly at
+                      risk. Reducing NO₂ emissions is crucial for improving air
+                      quality and protecting public health.
+                    </p>
+                  </div>
+
                   <div class="details-box">
                     <div id="current-no2" class="stat-detail">Current: --</div>
                     <div id="yesterday-no2" class="stat-detail">
@@ -338,10 +390,10 @@
                     <div id="forecast-avg-no2" class="stat-detail">
                       Forecast Avg: --
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="no2-tomorrow-chart"></canvas>
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="no2-7days-chart"></canvas>
                     </div>
                   </div>
@@ -350,6 +402,29 @@
                 <!-- Details Section NH3 -->
                 <div class="details-grid">
                   <h2>NH3 Details</h2>
+                  <div class="info-section">
+                    <h3>What is NH₃?</h3>
+                    <p>
+                      Ammonia (NH₃) is a colorless gas with a pungent odor,
+                      primarily released from agricultural activities,
+                      industrial processes, and waste management. It can react
+                      with other air pollutants to form particulate matter,
+                      contributing to air pollution.
+                    </p>
+                    <p>
+                      Exposure to high concentrations of ammonia can cause eye,
+                      nose, and throat irritation. Prolonged exposure may lead
+                      to respiratory issues and worsen conditions such as asthma
+                      and bronchitis.
+                    </p>
+                    <p>
+                      Farmers, industrial workers, and individuals living near
+                      agricultural or industrial sites may be at higher risk.
+                      Proper management of ammonia emissions is necessary to
+                      reduce its impact on air quality.
+                    </p>
+                  </div>
+
                   <div class="details-box">
                     <div id="current-nh3" class="stat-detail">Current: --</div>
                     <div id="yesterday-nh3" class="stat-detail">
@@ -361,10 +436,10 @@
                     <div id="forecast-avg-nh3" class="stat-detail">
                       Forecast Avg: --
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="nh3-tomorrow-chart"></canvas>
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="nh3-7days-chart"></canvas>
                     </div>
                   </div>
@@ -373,6 +448,29 @@
                 <!-- Details Section CO -->
                 <div class="details-grid">
                   <h2>CO Details</h2>
+                  <div class="info-section">
+                    <h3>What is CO?</h3>
+                    <p>
+                      Carbon monoxide (CO) is a colorless, odorless gas produced
+                      by incomplete combustion of fossil fuels. Common sources
+                      include vehicle exhaust, industrial processes, and indoor
+                      heating appliances.
+                    </p>
+                    <p>
+                      CO interferes with the body's ability to transport oxygen
+                      by binding to hemoglobin in the blood, leading to symptoms
+                      like headaches, dizziness, and nausea. High levels of
+                      exposure can cause unconsciousness and even death.
+                    </p>
+                    <p>
+                      Infants, the elderly, and individuals with cardiovascular
+                      or respiratory conditions are particularly susceptible to
+                      CO poisoning. Ensuring proper ventilation and regular
+                      maintenance of combustion appliances can help reduce CO
+                      exposure.
+                    </p>
+                  </div>
+
                   <div class="details-box">
                     <div id="current-co" class="stat-detail">Current: --</div>
                     <div id="yesterday-co" class="stat-detail">
@@ -384,10 +482,10 @@
                     <div id="forecast-avg-co" class="stat-detail">
                       Forecast Avg: --
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="co-tomorrow-chart"></canvas>
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="co-7days-chart"></canvas>
                     </div>
                   </div>
@@ -396,6 +494,29 @@
                 <!-- Details Section SO2 -->
                 <div class="details-grid">
                   <h2>SO2 Details</h2>
+                  <div class="info-section">
+                    <h3>What is SO₂?</h3>
+                    <p>
+                      Sulfur dioxide (SO₂) is a colorless gas with a sharp odor,
+                      primarily released from burning fossil fuels, industrial
+                      processes, and volcanic eruptions. It is a major air
+                      pollutant that contributes to acid rain and respiratory
+                      problems.
+                    </p>
+                    <p>
+                      Short-term exposure to SO₂ can cause throat irritation,
+                      coughing, and difficulty breathing, particularly in
+                      individuals with asthma. Long-term exposure may lead to
+                      decreased lung function and chronic respiratory diseases.
+                    </p>
+                    <p>
+                      Vulnerable populations, including children, the elderly,
+                      and individuals with respiratory conditions, are more at
+                      risk. Reducing SO₂ emissions is vital for protecting air
+                      quality and public health.
+                    </p>
+                  </div>
+
                   <div class="details-box">
                     <div id="current-so2" class="stat-detail">Current: --</div>
                     <div id="yesterday-so2" class="stat-detail">
@@ -407,10 +528,10 @@
                     <div id="forecast-avg-so2" class="stat-detail">
                       Forecast Avg: --
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="so2-tomorrow-chart"></canvas>
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="so2-7days-chart"></canvas>
                     </div>
                   </div>
@@ -419,6 +540,28 @@
                 <!-- Details Section O3 -->
                 <div class="details-grid">
                   <h2>O3 Details</h2>
+                  <div class="info-section">
+                    <h3>What is O₃?</h3>
+                    <p>
+                      Ozone (O₃) is a gas composed of three oxygen atoms.
+                      Ground-level ozone is a harmful air pollutant formed by
+                      the reaction of sunlight with pollutants like nitrogen
+                      oxides (NOₓ) and volatile organic compounds (VOCs).
+                    </p>
+                    <p>
+                      Exposure to high levels of ozone can cause respiratory
+                      irritation, coughing, and decreased lung function. It can
+                      also aggravate asthma and other lung diseases,
+                      particularly during physical activity.
+                    </p>
+                    <p>
+                      Children, the elderly, and individuals with pre-existing
+                      respiratory conditions are most vulnerable to ozone
+                      pollution. Monitoring ozone levels and reducing emissions
+                      of precursors can help mitigate its harmful effects.
+                    </p>
+                  </div>
+
                   <div class="details-box">
                     <div id="current-o3" class="stat-detail">Current: --</div>
                     <div id="yesterday-o3" class="stat-detail">
@@ -427,10 +570,10 @@
                     <div id="avg-7days-o3" class="stat-detail">
                       7-day Avg: --
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="o3-tomorrow-chart"></canvas>
                     </div>
-                    <div>
+                    <div class="canvas-container">
                       <canvas id="o3-7days-chart"></canvas>
                     </div>
                   </div>

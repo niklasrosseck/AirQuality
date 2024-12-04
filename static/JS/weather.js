@@ -11,24 +11,31 @@ function updateWeather() {
 // Fetch and render the hourly data using renderChart
 function renderHourlyData() {
   $.get("/hourly_data", function (data) {
+    const formattedTimes = data.times.map((time) => {
+      const date = new Date(time);
+      return date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    });
     // Render hourly temperature chart
-    renderChart("bar-temp-today-chart", "bar", data.times, data.temps, {
-      chartTitle: "Hourly Temperature (°C)",
+    renderChart("bar-temp-today-chart", "bar", formattedTimes, data.temps, {
+      chartTitle: "Hourly Temperature Today (°C)",
       datasetLabel: "Temperature (°C)",
       xAxisLabel: "Time",
       yAxisLabel: "Temperature (°C)",
-      backgroundColor: data.temps.map((temp) => getColorForTemperature(temp)), // Optional: Dynamic color based on temperature
+      backgroundColor: data.temps.map((temp) => getColorForTemperature(temp)),
       borderColor: "rgba(255, 99, 132, 1)",
       displayLegend: true,
     });
 
     // Render hourly humidity chart
-    renderChart("hum-today-chart", "line", data.times, data.humidity, {
-      chartTitle: "Hourly Humidity (%)",
+    renderChart("hum-today-chart", "line", formattedTimes, data.humidity, {
+      chartTitle: "Hourly Humidity Today (%)",
       datasetLabel: "Humidity (%)",
       xAxisLabel: "Time",
       yAxisLabel: "Humidity (%)",
-      backgroundColor: "rgba(54, 162, 235, 0.2)", // Optional: Static color for humidity
+      backgroundColor: "rgba(54, 162, 235, 0.2)",
       borderColor: "rgba(54, 162, 235, 1)",
       displayLegend: true,
     });
