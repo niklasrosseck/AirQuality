@@ -1,8 +1,9 @@
 from flask import jsonify, render_template, request
-from services.weather_service import get_hourly_data, get_seven_day_data, get_weather_data
-from services.pollution_service import get_pollution_data, get_forecast_pollution, get_historical_pollution, get_7day_pollution
+from services.weather_service import get_hourly_data, get_seven_day_data, get_weather_data, update_coordinates
+from services.pollution_service import get_pollution_data, get_forecast_pollution, get_historical_pollution, get_7day_pollution, update_poll_coordinates
 import traceback
 import sqlite3
+
 
 def register_routes(app):
     @app.route("/")
@@ -21,6 +22,10 @@ def register_routes(app):
     def weather_data():
         latitude = request.args.get('latitude')
         longitude = request.args.get('longitude')
+
+        if latitude is not None and longitude is not None:
+            update_coordinates(latitude, longitude)
+
         data = get_weather_data(latitude, longitude)
         return jsonify(data)
 
@@ -28,6 +33,10 @@ def register_routes(app):
     def hourly_data():
         latitude = request.args.get('latitude')
         longitude = request.args.get('longitude')
+
+        if latitude is not None and longitude is not None:
+            update_coordinates(latitude, longitude)
+
         data = get_hourly_data(latitude, longitude)
         return jsonify(data)
 
@@ -35,6 +44,10 @@ def register_routes(app):
     def seven_day_data():
         latitude = request.args.get('latitude')
         longitude = request.args.get('longitude')
+
+        if latitude is not None and longitude is not None:
+            update_coordinates(latitude, longitude)
+
         data = get_seven_day_data(latitude, longitude)
         return jsonify(data)
     
@@ -42,6 +55,10 @@ def register_routes(app):
     def pollution_data():
         latitude = request.args.get('latitude')
         longitude = request.args.get('longitude')
+
+        if latitude is not None and longitude is not None:
+            update_poll_coordinates(latitude, longitude)
+
         data = get_pollution_data(latitude, longitude)
         return jsonify(data)
     
@@ -49,6 +66,10 @@ def register_routes(app):
     def forecast_pollution():
         latitude = request.args.get('latitude')
         longitude = request.args.get('longitude')
+
+        if latitude is not None and longitude is not None:
+            update_poll_coordinates(latitude, longitude)
+
         hourly_data, avg_pollution = get_forecast_pollution(latitude, longitude)
     
         if hourly_data and avg_pollution:
@@ -63,6 +84,10 @@ def register_routes(app):
     def historical_pollution():
         latitude = request.args.get('latitude')
         longitude = request.args.get('longitude')
+
+        if latitude is not None and longitude is not None:
+            update_poll_coordinates(latitude, longitude)
+
         data = get_historical_pollution(latitude, longitude)
         return jsonify(data)
     
@@ -70,6 +95,10 @@ def register_routes(app):
     def historical_7day_pollution():
         latitude = request.args.get('latitude')
         longitude = request.args.get('longitude')
+
+        if latitude is not None and longitude is not None:
+            update_poll_coordinates(latitude, longitude)
+
         historical_data, avg_pollution = get_7day_pollution(latitude, longitude)
     
         if historical_data and avg_pollution:

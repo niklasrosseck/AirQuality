@@ -1,4 +1,18 @@
-// Function to update weather data
+$(document).ready(function () {
+  const currentCity = window.getCurrentCity();
+
+  updateWeather(currentCity.latitude, currentCity.longitude);
+  renderHourlyData(currentCity.latitude, currentCity.longitude);
+  renderSevenDayData(currentCity.latitude, currentCity.longitude);
+
+  setInterval(() => {
+    const currentCity = window.getCurrentCity();
+    updateWeather(currentCity.latitude, currentCity.longitude);
+    renderHourlyData(currentCity.latitude, currentCity.longitude);
+    renderSevenDayData(currentCity.latitude, currentCity.longitude);
+  }, 60000);
+});
+
 function updateWeather(latitude, longitude) {
   $.get(
     `/weather_data?latitude=${latitude}&longitude=${longitude}`,
@@ -7,13 +21,14 @@ function updateWeather(latitude, longitude) {
       $("#value-humidity").text(data.humidity + "%");
       $("#current-temp").text("Current: " + data.temp_c + "°C");
       $("#current-hum").text("Current: " + data.humidity + "%");
+      updateTemperatureStatus(data.temp_c);
+      updateHumidityStatus(data.humidity);
     }
   ).fail(function () {
     alert("Error fetching weather data.");
   });
 }
 
-// Fetch and render the hourly data using renderChart
 function renderHourlyData(latitude, longitude) {
   $.get(
     `/hourly_data?latitude=${latitude}&longitude=${longitude}`,
@@ -25,7 +40,7 @@ function renderHourlyData(latitude, longitude) {
           minute: "2-digit",
         });
       });
-      // Render hourly temperature chart
+
       renderChart("bar-temp-today-chart", "bar", formattedTimes, data.temps, {
         chartTitle: "Hourly Temperature Today (°C)",
         datasetLabel: "Temperature (°C)",
@@ -36,7 +51,6 @@ function renderHourlyData(latitude, longitude) {
         displayLegend: true,
       });
 
-      // Render hourly humidity chart
       renderChart("hum-today-chart", "line", formattedTimes, data.humidity, {
         chartTitle: "Hourly Humidity Today (%)",
         datasetLabel: "Humidity (%)",
@@ -50,7 +64,6 @@ function renderHourlyData(latitude, longitude) {
   );
 }
 
-// Fetch and render the 7-day average data using renderChart
 function renderSevenDayData(latitude, longitude) {
   $.get(
     `/seven_day_data?latitude=${latitude}&longitude=${longitude}`,
@@ -84,7 +97,7 @@ function renderSevenDayData(latitude, longitude) {
         datasetLabel: "Average Humidity (%)",
         xAxisLabel: "Day",
         yAxisLabel: "Humidity (%)",
-        backgroundColor: "rgba(54, 162, 235, 0.2)", // Light blue for humidity bars
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
         displayLegend: true,
       });
@@ -92,10 +105,28 @@ function renderSevenDayData(latitude, longitude) {
   );
 }
 
-$(document).ready(function () {
-  updateWeather("35.166668", "129.066666");
-  renderHourlyData("35.166668", "129.066666");
-  renderSevenDayData("35.166668", "129.066666");
-});
+function updateTemperatureStatus(temp) {
+  const tempIcon = document.getElementById("status-temp");
 
-//setInterval(updateWeather, 100000);
+  if (temp < 0) {
+    tempIcon.textContent = "❄️";
+  } else if (temp >= 0 && temp < 20) {
+    tempIcon.textContent = "🌥️";
+  } else if (temp >= 20 && temp < 30) {
+    tempIcon.textContent = "🌤️";
+  } else {
+    tempIcon.textContent = "🔥";
+  }
+}
+
+function updateHumidityStatus(humidity) {
+  const humidityIcon = document.getElementById("status-humidity");
+
+  if (humidity < 30) {
+    humidityIcon.textContent = "🌵";
+  } else if (humidity >= 30 && humidity < 60) {
+    humidityIcon.textContent = "🌿";
+  } else {
+    humidityIcon.textContent = "🌧️";
+  }
+}

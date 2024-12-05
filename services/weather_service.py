@@ -4,7 +4,7 @@ import requests
 from datetime import datetime, timedelta
 
 API_KEY = "e2a14997ca28418cb8c105717241311"
-LOCATION = "35.166668,129.066666"  
+current_coordinates = {"latitude": 35.1796, "longitude": 129.0756} 
 BASE_URL = "https://api.weatherapi.com/v1"
 
 # Data to store the current and historical weather values
@@ -79,17 +79,21 @@ def get_seven_day_data(latitude, longitude):
         print(f"Error fetching weather data: {e}")
 
 
-def update_weather_periodically(latitude, longitude):
+def update_weather_periodically():
     """Update the weather data every 10 minutes"""
     while True:
+        latitude = current_coordinates["latitude"]
+        longitude = current_coordinates["longitude"]
+
         get_weather_data(latitude, longitude)
         get_hourly_data(latitude, longitude)
         get_seven_day_data(latitude, longitude)
         time.sleep(600)
 
-latitude = 35.1796
-longitude = 129.0756
+def update_coordinates(lat, lon):
+    current_coordinates["latitude"] = lat
+    current_coordinates["longitude"] = lon
 
-weather_thread = threading.Thread(target=update_weather_periodically, args=(latitude, longitude))
+weather_thread = threading.Thread(target=update_weather_periodically)
 weather_thread.daemon = True
 weather_thread.start()
