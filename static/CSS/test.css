@@ -117,7 +117,7 @@ body {
 .menu-link.active {
   background-color: #f1f1f1;
   border-left: 4px solid #007bff;
-  color: #007bff;
+  color: inherit;
 }
 .settings-link,
 .logout-link {
@@ -129,116 +129,6 @@ body {
   margin-top: auto;
   align-self: start;
   margin: 21px 0 0 16px;
-}
-
-@media (max-width: 991px) {
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 80%;
-    height: 100vh;
-    background-color: #fafafa;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    transition: transform 0.3s ease;
-    transform: translateX(-100%);
-  }
-
-  .sidebar.active {
-    transform: translateX(0);
-  }
-
-  .main-section {
-    width: 100%;
-    transition: margin-left 0.3s ease;
-  }
-
-  .main-section.sidebar-active {
-    margin-left: 50%;
-  }
-
-  .sidebar-toggle {
-    display: block;
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    z-index: 1001;
-  }
-
-  .sidebar-menu {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    font-weight: 500;
-    margin-top: 20px;
-    gap: 5px;
-    width: 100%;
-  }
-
-  .menu-item {
-    width: 100%;
-    gap: 1px;
-  }
-
-  .menu-section {
-    margin-top: 1px;
-  }
-  .menu-link {
-    display: flex;
-    margin-top: 1px;
-    gap: 1px;
-    text-decoration: none;
-  }
-  .settings-link,
-  .logout-link {
-    gap: 2px;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-  }
-
-  .donut-grid {
-    grid-column: span 2;
-    margin-top: 20px;
-  }
-
-  .donut-title {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-
-  .content-grid {
-    grid-template-columns: 2fr;
-  }
-
-  .chart-container {
-    height: 300px;
-  }
-
-  .stat-value {
-    font-size: 18px;
-    white-space: normal;
-  }
-
-  .details-grid {
-    padding: 15px;
-  }
-
-  .info-section {
-    padding: 15px;
-  }
-
-  .stat-detail {
-    font-size: 0.9rem;
-  }
 }
 
 @media (min-width: 991px) {
@@ -337,46 +227,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-/* Responsive Styling */
-@media (max-width: 768px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 columns for small screens */
-    gap: 15px;
-  }
-
-  .donut-grid {
-    grid-column: span 2; /* Makes the donut chart span both columns */
-    margin-top: 20px;
-  }
-
-  .donut-title {
-    font-size: 18px; /* Smaller font size for mobile */
-    margin-bottom: 10px;
-  }
-  .content-grid {
-    grid-template-columns: 2fr;
-  }
-
-  .chart-container {
-    height: 300px;
-  }
-  .stat-value {
-    font-size: 18px;
-    white-space: normal;
-  }
-  .details-grid {
-    padding: 15px;
-  }
-
-  .info-section {
-    padding: 15px;
-  }
-
-  .stat-detail {
-    font-size: 0.9rem;
-  }
 }
 
 .visually-hidden {
