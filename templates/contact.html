@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='CSS/test.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='CSS/contact.css') }}"
+    />
+    <script src="{{ url_for('static', filename='JS/contact.js') }}"></script>
+    <title>Contact Us</title>
+  </head>
+  <body>
+    <div class="contact-page">
+      <header class="contact-header">
+        <h1>Contact Us</h1>
+        <p>
+          We'd love to hear from you! Feel free to reach out using the form
+          below or send us an email.
+        </p>
+      </header>
+
+      <!-- About Section -->
+      <section class="about-section">
+        <h2>About This Website</h2>
+        <p>
+          This website provides real-time weather and air quality information.
+          The data is collected from the following trusted sources:
+        </p>
+        <ul>
+          <li>
+            <strong>OpenWeather API:</strong> Provides accurate and up-to-date
+            weather forecasts and air quality data.
+          </li>
+          <li>
+            <strong>Weather API:</strong> Offers detailed historical weather
+            data for various locations worldwide.
+          </li>
+        </ul>
+        <p>
+          The aim of this website is to deliver reliable information to help you
+          make informed decisions based on current weather conditions and air
+          quality levels in your area.
+        </p>
+      </section>
+
+      <div class="content-grid">
+        <!-- Contact Info Section -->
+        <div class="contact-info-section">
+          <h2>Contact Information</h2>
+          <div class="contact-info">
+            <p>
+              <strong>Address:</strong> 2 Busandaehak-ro 63beon-gil,
+              Geumjeong-gu, Busan, South Korea
+            </p>
+            <p><strong>Email:</strong> contact@pnu.com</p>
+          </div>
+
+          <!-- Embedded Google Map -->
+          <div class="map-container">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3262.715358715902!2d129.0784965!3d35.2339681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x356893ed98632733%3A0x43d6042e21f10697!2sPusan%20National%20University!5e0!3m2!1sen!2skr!4v1639395634894!5m2!1sen!2skr"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+
+        <!-- Contact Form Section -->
+        <div class="contact-form-section">
+          <h2>Get In Touch</h2>
+          <form class="contact-form" action="#" method="POST">
+            <label for="name">Full Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Your Name"
+              required
+            />
+
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Your Email"
+              required
+            />
+
+            <label for="message">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              placeholder="Your Message"
+              required
+            ></textarea>
+
+            <button type="submit">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

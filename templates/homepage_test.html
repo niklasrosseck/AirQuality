@@ -13,6 +13,10 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='CSS/small.css') }}"
+    />
     <!--Jquery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
@@ -98,7 +102,7 @@
                   </a>
                   <h2 class="menu-section">About</h2>
                   <!--Contact Sidebar Icon and Link-->
-                  <a href="#" class="menu-link">
+                  <a href="/contact" class="menu-link">
                     <i class="material-icons" aria-label="Contact">contacts</i>
                     <span>Contact</span>
                   </a>
@@ -615,10 +619,10 @@
       <div class="footer-content">
         <p>&copy; 2024 PNU University. All rights reserved.</p>
         <nav class="footer-nav">
-          <a href="/privacy">Privacy Policy</a> |
-          <a href="/terms">Terms of Service</a> |
+          <a href="/privacy" target="_blank">Privacy Policy</a> |
+          <a href="https://www.termsfeed.com/live/b787721f-909f-45b6-9a97-cf860c837b78" target="_blank">Terms of Service</a> |
           <a href="/contact">Contact</a> |
-          <a href="https://github.com/niklasrosseck/AirQuality">Github</a>
+          <a href="https://github.com/niklasrosseck/AirQuality" target="_blank">Github</a>
         </nav>
       </div>
     </footer>

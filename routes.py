@@ -9,6 +9,14 @@ def register_routes(app):
     def index():
         return render_template("homepage_test.html")
     
+    @app.route("/privacy")
+    def privacy():
+        return render_template("privacy.html")
+    
+    @app.route("/contact")
+    def contact():
+        return render_template("contact.html")
+    
     @app.route("/weather_data")
     def weather_data():
         latitude = request.args.get('latitude')

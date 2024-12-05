@@ -510,3 +510,42 @@ canvas {
 .footer-nav a:hover {
   text-decoration: underline;
 }
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for small screens */
+    gap: 15px;
+  }
+
+  .donut-grid {
+    grid-column: span 2; /* Makes the donut chart span both columns */
+    margin-top: 20px;
+  }
+
+  .donut-title {
+    font-size: 18px; /* Smaller font size for mobile */
+    margin-bottom: 10px;
+  }
+  .content-grid {
+    grid-template-columns: 2fr;
+  }
+
+  .chart-container {
+    height: 300px;
+  }
+  .stat-value {
+    font-size: 18px;
+    white-space: normal;
+  }
+  .details-grid {
+    padding: 15px;
+  }
+
+  .info-section {
+    padding: 15px;
+  }
+
+  .stat-detail {
+    font-size: 0.9rem;
+  }
+}
