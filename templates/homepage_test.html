@@ -25,6 +25,7 @@
     <!--Chart JS-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!--Own Scripts-->
+    <script src="{{ url_for('static', filename='JS/initialize.js') }}"></script>
     <script src="{{ url_for('static', filename='JS/chart.js') }}"></script>
     <script src="{{ url_for('static', filename='JS/weather.js') }}"></script>
     <script src="{{ url_for('static', filename='JS/pollution.js') }}"></script>
@@ -141,6 +142,7 @@
                           <h2 class="card-title">Today's Temperature</h2>
                           <div class="card-bottom">
                             <div id="value-temp" class="stat-value">--</div>
+                            <div class="status-icon" id="status-temp">🌡️</div>
                           </div>
                         </div>
                       </article>
@@ -151,11 +153,12 @@
                           <h2 class="card-title">Today's Humidity</h2>
                           <div class="card-bottom">
                             <div id="value-humidity" class="stat-value">--</div>
+                            <div class="status-icon" id="status-humidity">💧</div>
                           </div>
                         </div>
                       </article>
 
-                      <!-- Current Value for for Humidity -->
+                      <!-- Current Value for PM2.5 -->
                       <article class="stat-card">
                         <div class="card-content">
                           <h2 class="card-title">Today's PM2.5</h2>
@@ -325,6 +328,20 @@
                       <canvas id="pm2_5-7days-chart"></canvas>
                     </div>
                   </div>
+                  <div class="info-section">
+                    <h3>For More Information</h3>
+                    <div class="video-container">
+                      <iframe 
+                        width="100%" 
+                        height="400" 
+                        src="https://www.youtube.com/embed/67iLPfrSQ0I" 
+                        title="YouTube video about PM2.5"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                      </iframe>
+                    </div>
+                  </div>
                 </div>
                 </section>
 
@@ -369,6 +386,20 @@
                     </div>
                     <div class="canvas-container">
                       <canvas id="pm10-7days-chart"></canvas>
+                    </div>
+                  </div>
+                  <div class="info-section">
+                    <h3>For More Information</h3>
+                    <div class="video-container">
+                      <iframe 
+                        width="100%" 
+                        height="400" 
+                        src="https://www.youtube.com/embed/XAmk7euyRck" 
+                        title="YouTube video about PM10"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                      </iframe>
                     </div>
                   </div>
                 </div>
@@ -419,6 +450,20 @@
                       <canvas id="no2-7days-chart"></canvas>
                     </div>
                   </div>
+                  <div class="info-section">
+                    <h3>For More Information</h3>
+                    <div class="video-container">
+                      <iframe 
+                        width="100%" 
+                        height="400" 
+                        src="https://www.youtube.com/embed/4i6ng9kuLkM" 
+                        title="YouTube video about NO2"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                      </iframe>
+                    </div>
+                  </div>
                 </div>
                 </section>
 
@@ -465,6 +510,20 @@
                     </div>
                     <div class="canvas-container">
                       <canvas id="nh3-7days-chart"></canvas>
+                    </div>
+                  </div>
+                  <div class="info-section">
+                    <h3>For More Information</h3>
+                    <div class="video-container">
+                      <iframe 
+                        width="100%" 
+                        height="400" 
+                        src="https://www.youtube.com/embed/fiUTJWm-YdQ" 
+                        title="YouTube video about NH3"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                      </iframe>
                     </div>
                   </div>
                 </div>
@@ -515,6 +574,20 @@
                       <canvas id="co-7days-chart"></canvas>
                     </div>
                   </div>
+                  <div class="info-section">
+                    <h3>For More Information</h3>
+                    <div class="video-container">
+                      <iframe 
+                        width="100%" 
+                        height="400" 
+                        src="https://www.youtube.com/embed/FRn_sONIrRI" 
+                        title="YouTube video about CO"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                      </iframe>
+                    </div>
+                  </div>
                 </div>
                 </section>
 
@@ -563,6 +636,20 @@
                       <canvas id="so2-7days-chart"></canvas>
                     </div>
                   </div>
+                  <div class="info-section">
+                    <h3>For More Information</h3>
+                    <div class="video-container">
+                      <iframe 
+                        width="100%" 
+                        height="400" 
+                        src="https://www.youtube.com/embed/fUDmPXztCww" 
+                        title="YouTube video about SO2"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                      </iframe>
+                    </div>
+                  </div>
                 </div>
                 </section>
 
@@ -606,6 +693,20 @@
                     <div class="canvas-container">
                       <canvas id="o3-7days-chart"></canvas>
                     </div>
+                  </div>
+                </div>
+                <div class="info-section">
+                  <h3>For More Information</h3>
+                  <div class="video-container">
+                    <iframe 
+                      width="100%" 
+                      height="400" 
+                      src="https://www.youtube.com/embed/7ypXX_3mp2c" 
+                      title="YouTube video about O3"
+                      frameborder="0" 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                      allowfullscreen>
+                    </iframe>
                   </div>
                 </div>
               </div>

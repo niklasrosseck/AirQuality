@@ -1,21 +1,18 @@
 $(document).ready(function () {
-  // Populate suggestions using the hardcoded list
   $("#city-search").autocomplete({
     source: cities.map((city) => `${city.name}, ${city.country}`),
-    minLength: 1, // Show suggestions after 1 character
+    minLength: 1,
     select: function (event, ui) {
       $("#city-search").val(ui.item.label);
       fetchCityCoordinates(ui.item.label);
     },
   });
 
-  // Fetch coordinates when the search button is clicked
   $("#search-button").on("click", function () {
     const cityName = $("#city-search").val();
     fetchCityCoordinates(cityName);
   });
 
-  // Fetch coordinates from the hardcoded list
   function fetchCityCoordinates(cityName) {
     const city = cities.find((c) => {
       const fullName = `${c.name}, ${c.country}`;
@@ -23,6 +20,7 @@ $(document).ready(function () {
     });
 
     if (city) {
+      window.setCurrentCity(city);
       updateSite(city.name, city.latitude, city.longitude);
     } else {
       alert("City not found.");
@@ -33,7 +31,6 @@ $(document).ready(function () {
 // Using hardcoded cities because I could not get the database to work
 // and the database is also nearly 1GB in size which comes close to the limit of Github
 
-// Hardcoded city data
 const cities = [
   // Top 10 cities in South Korea
   {

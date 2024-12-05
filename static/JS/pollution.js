@@ -1,8 +1,18 @@
 $(document).ready(function () {
-  updatePollution("35.166668", "129.066666");
-  updateTomorrowpollution("35.166668", "129.066666");
-  updateYesterdaypollution("35.166668", "129.066666");
-  update7daypollution("35.166668", "129.066666");
+  const currentCity = window.getCurrentCity();
+
+  updatePollution(currentCity.latitude, currentCity.longitude);
+  updateTomorrowpollution(currentCity.latitude, currentCity.longitude);
+  updateYesterdaypollution(currentCity.latitude, currentCity.longitude);
+  update7daypollution(currentCity.latitude, currentCity.longitude);
+
+  setInterval(() => {
+    const currentCity = window.getCurrentCity();
+    updatePollution(currentCity.latitude, currentCity.longitude);
+    updateTomorrowpollution(currentCity.latitude, currentCity.longitude);
+    updateYesterdaypollution(currentCity.latitude, currentCity.longitude);
+    update7daypollution(currentCity.latitude, currentCity.longitude);
+  }, 60000);
 });
 
 const pollutantIcons = ["😊", "😐", "😷", "🤒", "🆘"];

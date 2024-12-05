@@ -4,9 +4,12 @@ import requests
 from datetime import datetime, timedelta
 
 API_KEY = "fd488f47838f7b8ad07a3418c68837ce"
-LATITUDE = "35.166668"
-LONGITUDE = "129.066666"
+current_poll_coordinates = {"latitude": 35.1796, "longitude": 129.0756}
 BASE_URL = "https://api.openweathermap.org/data/2.5/air_pollution"
+
+def update_poll_coordinates(lat, lon):
+    current_poll_coordinates["latitude"] = lat
+    current_poll_coordinates["longitude"] = lon
 
 current_pollution = {
     "pm2_5": 0,
@@ -182,17 +185,18 @@ def get_7day_pollution(latitude, longitude):
         print(f"Error fetching 7 day history pollution data: {e}")
         return None, None
 
-def update_pollution_periodically(latitude, longitude):
+def update_pollution_periodically():
     while True:
+        latitude = current_poll_coordinates["latitude"]
+        longitude = current_poll_coordinates["longitude"]
+
         get_pollution_data(latitude, longitude)
         get_forecast_pollution(latitude, longitude)
         get_historical_pollution(latitude, longitude)
         get_7day_pollution(latitude, longitude)
         time.sleep(600)  
 
-latitude = 35.1796
-longitude = 129.0756
 
-pollution_thread = threading.Thread(target=update_pollution_periodically, args=(latitude, longitude))
+pollution_thread = threading.Thread(target=update_pollution_periodically)
 pollution_thread.daemon = True 
 pollution_thread.start()
