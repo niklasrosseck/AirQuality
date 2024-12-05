@@ -1,6 +1,7 @@
 from flask import jsonify, render_template, request
 from services.weather_service import get_hourly_data, get_seven_day_data, get_weather_data, update_coordinates
 from services.pollution_service import get_pollution_data, get_forecast_pollution, get_historical_pollution, get_7day_pollution, update_poll_coordinates
+from services.weather_dashboard import get_weather_api_data, update_weather_coordinates
 import traceback
 import sqlite3
 
@@ -17,6 +18,10 @@ def register_routes(app):
     @app.route("/contact")
     def contact():
         return render_template("contact.html")
+    
+    @app.route("/weather")
+    def weather():
+        return render_template("weather.html")
     
     @app.route("/weather_data")
     def weather_data():
@@ -165,6 +170,16 @@ def register_routes(app):
             print("Error fetching suggestions:", e)
             traceback.print_exc()
             return jsonify([])
+    
+    @app.route("/weather_dashboard_data")
+    def weather_dashboard_data():
+        latitude = request.args.get('latitude')
+        longitude = request.args.get('longitude')
 
+        if latitude is not None and longitude is not None:
+            update_weather_coordinates(latitude, longitude)
+
+        data = get_weather_api_data(latitude, longitude)
+        return jsonify(data)
 
         

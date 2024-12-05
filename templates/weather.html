@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='CSS/weather-dash.css') }}"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+    <script src="{{ url_for('static', filename='JS/initialize.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/weather-dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/city-weather.js') }}"></script>
+  </head>
+  <body>
+    <div class="top-container">
+      <button id="back-button">
+        <span class="material-icons">arrow_back</span> Back
+      </button>
+      <input type="text" id="city-search" placeholder="Search for a city..." />
+    </div>
+    <div class="weather-container">
+      <h1>Current Weather</h1>
+      <div class="weather-info">
+        <div class="weather-box">
+          <p>Temperature: <span id="temp_c"></span></p>
+        </div>
+        <div class="weather-box">
+          <p>Humidity: <span id="humidity"></span></p>
+        </div>
+        <div class="weather-box">
+          <p>Sunrise: <span id="sunrise"></span></p>
+        </div>
+        <div class="weather-box">
+          <p>Sunset: <span id="sunset"></span></p>
+        </div>
+        <div class="weather-box">
+          <p>Wind Speed: <span id="wind-speed"></span></p>
+        </div>
+        <div class="weather-box">
+          <p>Wind Direction: <span id="wind-direction"></span></p>
+        </div>
+        <div class="weather-box">
+          <p>Cloud Coverage: <span id="cloud-coverage"></span></p>
+        </div>
+        <div class="weather-box">
+          <p>Feels Like: <span id="feels-like-temp"></span></p>
+        </div>
+        <div class="weather-box">
+          <p>UV Index: <span id="uv"></span></p>
+        </div>
+        <div class="weather-box">
+          <p>Weather: <span id="weather-description"></span></p>
+        </div>
+        <div class="weather-box">
+          <p>Snowfall: <span id="snow"></span></p>
+        </div>
+        <div class="weather-box">
+          <p>Solar Radiation: <span id="solar-radiation"></span></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
