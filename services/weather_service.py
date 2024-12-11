@@ -2,8 +2,12 @@ import time
 import threading
 import requests
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
+import os
 
-API_KEY = "e2a14997ca28418cb8c105717241311"
+load_dotenv()
+
+API_KEY = os.getenv("WEATHERAPI_API_KEY")
 current_coordinates = {"latitude": 35.1796, "longitude": 129.0756} 
 BASE_URL = "https://api.weatherapi.com/v1"
 

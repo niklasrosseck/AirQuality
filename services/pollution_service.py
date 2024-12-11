@@ -2,8 +2,12 @@ import time
 import threading
 import requests
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
+import os
 
-API_KEY = "fd488f47838f7b8ad07a3418c68837ce"
+load_dotenv()
+
+API_KEY = os.getenv("OPENWEATHERMAP_API_KEY")
 current_poll_coordinates = {"latitude": 35.1796, "longitude": 129.0756}
 BASE_URL = "https://api.openweathermap.org/data/2.5/air_pollution"
 

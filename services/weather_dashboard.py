@@ -1,8 +1,12 @@
 import time
 import threading
 import requests
+from dotenv import load_dotenv
+import os
 
-API_KEY = "456b134c5b814ff8b87aba85b8dc06c0"
+load_dotenv()
+
+API_KEY = os.getenv("WEATHERBIT_API_KEY")
 current_weather_coordinates = {"latitude": 35.1796, "longitude": 129.0756}
 BASE_URL = "https://api.weatherbit.io/v2.0/current"
 
