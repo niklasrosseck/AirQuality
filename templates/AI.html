@@ -1,7 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>AI Prediction Dashboard</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CO2 Prediction Dashboard</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='CSS/ai.css') }}"
+    />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="{{ url_for('static', filename='JS/ai.js') }}"></script>
   </head>
-  <body></body>
+  <body>
+    <div class="container">
+      <header>
+        <h1>CO2 Prediction Dashboard</h1>
+      </header>
+      <div class="controls">
+        <label for="model-select">Select Model:</label>
+        <select id="model-select" onchange="updatePrediction(); updateGraphs()">
+          <option value="gru">GRU</option>
+          <option value="lstm">LSTM</option>
+          <option value="bilstm">Bidirectional LSTM</option>
+          <option value="cnn_lstm">CNN LSTM Mix</option>
+          <option value="deeplstm">Deep LSTM</option>
+        </select>
+        <button id="export-btn" onclick="exportCSV()">Export CSV</button>
+      </div>
+      <div class="main-content">
+        <!-- Container for Graphs and CO2 Value Box -->
+        <div class="graphs-container">
+          <div id="co2-graph" class="graph"></div>
+          <div id="loss-graph" class="graph"></div>
+        </div>
+        <div id="co2-value" class="info-box">
+          <h3>Predicted CO2 Value</h3>
+          <p id="predicted-co2">-- ppm</p>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

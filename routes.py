@@ -1,9 +1,27 @@
-from flask import jsonify, render_template, request
+# Here are all routes from the whole website
+# Every data and its path that needs to be accessed is defined here
+
+from flask import jsonify, render_template, request, send_from_directory, send_file
 from services.weather_service import get_hourly_data, get_seven_day_data, get_weather_data, update_coordinates
 from services.pollution_service import get_pollution_data, get_forecast_pollution, get_historical_pollution, get_7day_pollution, update_poll_coordinates
 from services.weather_dashboard import get_weather_api_data, update_weather_coordinates
+from services.ai_predict import load_data, preprocess_data, predict
 import traceback
 import sqlite3
+import json
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler
+
+MODEL_PATHS = {
+    "gru": "./models/model_gru.keras",
+    "lstm": "./models/model_lstm.keras",
+    "bilstm": "./models/model_bi.keras",
+    "cnn_lstm": "./models/model_cnn.keras",
+    "deeplstm": "./models/model_deep.keras",
+}
+
+CSV_FILE = './static/data/real_time_co2_data.csv'
 
 
 def register_routes(app):
@@ -22,6 +40,10 @@ def register_routes(app):
     @app.route("/weather")
     def weather():
         return render_template("weather.html")
+    
+    @app.route("/ai")
+    def ai():
+        return render_template("AI.html")
     
     @app.route("/weather_data")
     def weather_data():
@@ -181,5 +203,93 @@ def register_routes(app):
 
         data = get_weather_api_data(latitude, longitude)
         return jsonify(data)
+
+    @app.route('/csv_data', methods=['GET'])
+    def get_csv_data():
+        return send_from_directory('static/data', 'real_time_co2_data.csv')
+
+    @app.route('/predict_co2', methods=['POST'])
+    def make_prediction():
+        try:
+            print(f"Received request data: {request.json}")
+
+            model_name = request.json.get('model_name')
+            if not model_name:
+                return jsonify({'error': "Model name not provided."}), 400
+
+            if model_name not in MODEL_PATHS:
+                return jsonify({'error': f"Model '{model_name}' not found."}), 400
+            
+
+            df = pd.read_csv(CSV_FILE)
+
+            df['datetime'] = pd.to_datetime(df['datetime'])
+            df.set_index('datetime', inplace=True)
+
+            features = ['Temperature', 'Pressure', 'Humidity', 'VoC', 'Altitude']
+            target = ['CO2']
+
+            feature_scaler = MinMaxScaler()
+            df[features] = feature_scaler.fit_transform(df[features])
+        
+            target_scaler = MinMaxScaler()
+            df[target] = target_scaler.fit_transform(df[target])
+
+            def create_sequences(data, seq_len):
+                X, y = [], []
+                for i in range(len(data) - seq_len):
+                    X.append(data[i:i + seq_len, :-1])  # Features
+                    y.append(data[i + seq_len, -1])     # Target (CO2)
+                return np.array(X), np.array(y)
+
+            sequence_length = 96
+            data = df[features + target].values
+            X, y = create_sequences(data, sequence_length)
+
+            predictions = predict(model_name, X)
+
+            if len(predictions.shape) == 1:
+                predictions = predictions.reshape(-1, 1)
+
+            predictions_rescaled = target_scaler.inverse_transform(predictions.reshape(-1, 1))
+
+            latest_prediction = float(predictions_rescaled[-1][0])
+            rounded_prediction = round(latest_prediction, 2)
+
+            if rounded_prediction < 400:
+                co2_category = "Low"
+            elif 400 <= latest_prediction < 600:
+                co2_category = "Medium"
+            elif 600 <= latest_prediction < 900:
+                co2_category = "High"
+            else:
+                co2_category = "Very High"
+
+            return jsonify({'model': model_name, 'predicted_co2': rounded_prediction, 'co2_category': co2_category})
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+        
+    
+    @app.route('/get_loss_data/<model_name>', methods=['GET'])
+    def get_co2_loss_data(model_name):
+        try:
+            filepath = f'static/data/{model_name}/loss_data_{model_name}.json'
+            with open(filepath, 'r') as f:
+                loss_data = json.load(f)
+            return jsonify(loss_data)
+        except FileNotFoundError:
+            return jsonify({"error": f"Loss data for model '{model_name}' not found."}), 404
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route('/get_predictions/<model_name>', methods=['GET'])
+    def get_co2_predictions(model_name):
+        try:
+            filepath = f'static/data/{model_name}/predictions_vs_actual_{model_name}.csv'
+            return send_file(filepath, as_attachment=True)
+        except FileNotFoundError:
+            return jsonify({"error": f"Prediction data for model '{model_name}' not found."}), 404
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
 
         
