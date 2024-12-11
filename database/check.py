@@ -1,3 +1,5 @@
+# This function checks the database if the columns all got imported correctly and what the labels of the 
+# columns are
 import sqlite3
 
 def display_table_data(db_path):

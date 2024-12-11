@@ -1,3 +1,5 @@
+# Function to test the database and see the output of the first 5 rows
+# Used for debugging and seeing what the database looks like
 import sqlite3
 
 db_path = r'C:\Users\spiel\AirQuality\database\cities.db'

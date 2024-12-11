@@ -1,21 +1,19 @@
+# This function was used to create the database with the selected columns from the CSV file
+# The csv file was deleted at the end because it was nearly 1GB 
 import sqlite3
 import pandas as pd
 import os
 
-# Load the CSV using pandas, selecting only the required columns
 df = pd.read_csv("geonames.csv", usecols=['name', 'asciiname', 'alternatenames', 'latitude', 'longitude', 'country code'])
 
-# Define the path to save the database inside the database folder
 database_folder = r'C:\Users\spiel\AirQuality\database' 
 os.makedirs(database_folder, exist_ok=True) 
 
 db_path = os.path.join(database_folder, 'cities.db') 
 
-# Connect to SQLite (it will create the file if it doesn't exist)
 conn = sqlite3.connect(db_path)  
 cursor = conn.cursor()
 
-# Create table (if not exists)
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS cities (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,7 +28,6 @@ cursor.execute('''
 
 for index, row in df.iterrows():
         
-        # Insert data into SQLite
         cursor.execute('''
             INSERT INTO cities (name, country_name, ascii_name, alternate_names, latitude, longitude)
             VALUES (?, ?, ?, ?, ?, ?)
